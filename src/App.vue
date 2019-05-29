@@ -1,67 +1,6 @@
 <template>
-  <div id="app" class="layout">
-    <Layout>
-      <Header style="margin-top: 0" v-if="header_show">
-        <Menu mode="horizontal" theme="dark" active-name="1">
-          <div class="layout-logo"></div>
-          <div class="layout-nav">
-            <MenuItem name="1">
-              <Icon type="ios-navigate"></Icon>
-              电影管理
-            </MenuItem>
-            <MenuItem name="2">
-              <Icon type="ios-keypad"></Icon>
-              排片管理
-            </MenuItem>
-            <MenuItem name="3">
-              <Icon type="ios-analytics"></Icon>
-              Item 3
-            </MenuItem>
-            <MenuItem name="4">
-              <Icon type="ios-paper"></Icon>
-              Item 4
-            </MenuItem>
-          </div>
-        </Menu>
-      </Header>
-      <Layout :style="{padding: '0 50px'}">
-        <Sider hide-trigger :style="{background: '#fff'}" v-if="sider_show">
-          <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
-            <Submenu name="1">
-              <template slot="title">
-                <Icon type="ios-navigate"></Icon>
-                电影管理
-              </template>
-              <MenuItem name="1-1">新增电影</MenuItem>
-              <MenuItem name="1-2">修改信息</MenuItem>
-              <MenuItem name="1-3">删除电影</MenuItem>
-            </Submenu>
-            <Submenu name="2">
-              <template slot="title">
-                <Icon type="ios-keypad"></Icon>
-                排片管理
-              </template>
-              <MenuItem name="2-1">新增排片</MenuItem>
-              <MenuItem name="2-2">修改排片</MenuItem>
-            </Submenu>
-            <Submenu name="3">
-              <template slot="title">
-                <Icon type="ios-analytics"></Icon>
-                Item 3
-              </template>
-              <MenuItem name="3-1">Option 1</MenuItem>
-              <MenuItem name="3-2">Option 2</MenuItem>
-            </Submenu>
-          </Menu>
-        </Sider>
-
-        <Content>
-          <router-view v-on:Header="header" v-on:Sider="sider"></router-view>
-        </Content>
-
-      </Layout>
-      <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
-    </Layout>
+  <div id="app">
+    <router-view></router-view>
   </div>
 </template>
 
@@ -98,27 +37,22 @@
 
 <script>
 export default {
-  name: 'App',
-  data() {
-    return {
-      header_show: true,
-      sider_show:true,
-    }
-  },
-  methods:{
-    //是否显示头部
-    header:function (bool) {
-      this.header_show = bool;
-    },
-    //是否显示底部
-    sider:function (bool) {
-      this.sider_show = bool;
-    }
+  data() { return {
+  }},
+  components: {
   }
 }
 </script>
 
 <style>
+  html {
+    height: 100%;
+    padding: 0;
+  }
+  body {
+    height: 100%;
+    margin: 0;
+  }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

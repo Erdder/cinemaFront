@@ -1,19 +1,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/components/Login'
-import Register from '@/components/Register'
-import adminMovieSchedule from '@/components/adminMovieSchedule'
-import adminMovieManage from '@/components/adminMovieManage'
-
+import AdminLogin from '../views/AdminLogin.vue'
+import Register from '../views/Register'
+import AdminMain from '../views/AdminMain'
+import AdminMovieSchedule from '../views/AdminMovieSchedule'
+import AdminMovieManage from '../views/AdminMovieManage'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '/Login',
-      name: 'Login',
-      component: Login,
+     {
+      path: '/AdminLogin',
+      name: 'AdminLogin',
+      component: AdminLogin,
     },
     {
       path: '/Register',
@@ -21,19 +21,19 @@ export default new Router({
       component: Register
     },
     {
-      path:'/mainPage',
-      name:'/mainPage',
-      component: mainPage,
+      path:'/AdminMain',
+      name:'/AdminMain',
+      component: AdminMain,
       children: [
-        {
-          path: '/adminMovieManage',
-          name: 'adminMovieManage',
-          component: () => import('@/views/adminMovieManage.vue')
+         {
+          path: '/AdminMovieManage',
+          name: 'AdminMovieManage',
+          component: () => import('../views/AdminMovieManage.vue')
         },
-        {
-          path: '/adminMovieSchedule',
-          name: 'adminMovieSchedule',
-          component: () => import('@/views/adminMovieSchedule.vue')
+         {
+          path: '/AdminMovieSchedule',
+          name: 'AdminMovieSchedule',
+          component: () => import('../views/AdminMovieSchedule.vue')
         }
       ]
     },

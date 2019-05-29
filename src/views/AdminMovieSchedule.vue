@@ -7,7 +7,7 @@
         </Select>
       </FormItem>
       <FormItem label="选择日期" style="width:200px;margin-right: 150px" >
-          <Row>
+        <Row>
           <Col span="20" >
             <DatePicker type="daterange" :options="options2" placement="bottom-end" placeholder="请选择日期" style="width: 200px"></DatePicker>
           </Col>
@@ -19,7 +19,7 @@
         </Select>
       </FormItem>
       <FormItem label="场次票价" style="width:200px;margin-right: 150px">
-          <Input v-model="ticketValue" prefix="logo-yen" placeholder="请输入数字" style="width: 200px" type ="number"/>
+        <Input v-model="ticketValue" prefix="logo-yen" placeholder="请输入数字" style="width: 200px" type ="number"/>
       </FormItem>
       <FormItem label="电影时间" style="width:400px;margin-right: 300px;text-align: left">
         <el-time-picker
@@ -46,61 +46,61 @@
 </template>
 
 <script>
-    export default {
-      name: "adminMovieSchedule",
-      data() {
-        return {
-          movieList: [
+  export default {
+    name: "adminMovieSchedule",
+    data() {
+      return {
+        movieList: [
+          {
+            value: 'quanlide ',
+            label: '权力的游戏',
+          }
+        ],
+        hallList: [
+          {
+            value: 'first',
+            label: '一号厅',
+          }
+        ],
+        movieModel: '',
+        hallModel: '',
+        options2: {
+          shortcuts: [
             {
-              value: 'quanlide ',
-              label: '权力的游戏',
-            }
-          ],
-          hallList: [
-            {
-              value: 'first',
-              label: '一号厅',
-            }
-          ],
-          movieModel: '',
-          hallModel: '',
-          options2: {
-            shortcuts: [
-              {
-                text: '1 week',
-                value() {
-                  const end = new Date();
-                  const start = new Date();
-                  start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                  return [start, end];
-                }
-              },
-              {
-                text: '1 month',
-                value() {
-                  const end = new Date();
-                  const start = new Date();
-                  start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                  return [start, end];
-                }
-              },
-              {
-                text: '3 months',
-                value() {
-                  const end = new Date();
-                  const start = new Date();
-                  start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                  return [start, end];
-                }
+              text: '1 week',
+              value() {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                return [start, end];
               }
-            ]
-          },
-          ticketValue: '',
-          timeValue:  '',
-        }
-
+            },
+            {
+              text: '1 month',
+              value() {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                return [start, end];
+              }
+            },
+            {
+              text: '3 months',
+              value() {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                return [start, end];
+              }
+            }
+          ]
+        },
+        ticketValue: '',
+        timeValue:  '',
       }
+
     }
+  }
 </script>
 
 <style scoped>

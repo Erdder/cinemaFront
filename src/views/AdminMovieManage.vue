@@ -31,22 +31,22 @@
           </FormItem>
           <FormItem label="电影时长" prop="duration" style="width: 300px; text-align: left">
             <Input type="number" v-model="formValidate.duration" placeholder="请输入数字">
-            <span slot="append">分钟</span>
+              <span slot="append">分钟</span>
             </Input>
           </FormItem>
           <FormItem label="上映时间" style="width: 530px">
             <Row>
               <Col span="5">
-              <FormItem prop="date">
-                <DatePicker type="date" placeholder="选择日期" v-model="formValidate.date"></DatePicker>
-              </FormItem>
+                <FormItem prop="date">
+                  <DatePicker type="date" placeholder="选择日期" v-model="formValidate.date"></DatePicker>
+                </FormItem>
               </Col>
               <Col span="2" style="text-align: center">
-              -</Col>
+                -</Col>
               <Col span="5">
-              <FormItem prop="time">
-                <TimePicker type="time" placeholder="选择时间" v-model="formValidate.time"></TimePicker>
-              </FormItem>
+                <FormItem prop="time">
+                  <TimePicker type="time" placeholder="选择时间" v-model="formValidate.time"></TimePicker>
+                </FormItem>
               </Col>
             </Row>
           </FormItem>
@@ -65,17 +65,17 @@
               :rules="{required: true, message:'不能为空', trigger: 'blur'}">
               <Row>
                 <Col span="18">
-                <Input type="text" v-model="item.value" placeholder="请输入演员名字"></Input>
+                  <Input type="text" v-model="item.value" placeholder="请输入演员名字"></Input>
                 </Col>
                 <Col span="4" offset="1">
-                <Button @click="handleRemove(index)">删除</Button>
+                  <Button @click="handleRemove(index)">删除</Button>
                 </Col>
               </Row>
             </FormItem>
             <FormItem label="添加演员">
               <Row>
                 <Col span="12">
-                <Button type="dashed" long @click="handleAdd" icon="md-add">添加</Button>
+                  <Button type="dashed" long @click="handleAdd" icon="md-add">添加</Button>
                 </Col>
               </Row>
             </FormItem>

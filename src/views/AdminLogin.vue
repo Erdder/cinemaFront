@@ -1,5 +1,5 @@
 <template>
-  <Card style="width:450px;margin: 0 auto">
+  <Card style="width:450px;margin: 100px auto">
     <p slot="title">
       <Icon type="md-contact"></Icon>
       管理员登录
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+  import adminApi from '../api/adminApi'
   export default {
     name: "Login",
     data() {
@@ -64,11 +65,19 @@
         xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
         xmlhttp.send();
       },
-      created:function () {
-        this.$emit('header', false);
-      }
-    },
 
+      created() {
+        adminApi.VerifyAdmin(
+          {
+            username: '',
+            password: '',
+          },
+          (res) => {
+            this.$emit('header', false);
+          }
+        )
+      },
+    }
   }
 </script>
 

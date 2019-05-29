@@ -1,8 +1,8 @@
 <template>
-  <div id="app" class="layout">
+  <div  class="layout">
     <Layout>
       <Header style="margin-top: 0" >
-        <Menu mode="horizontal" theme="dark" active-name="1">
+        <Menu mode="horizontal" theme="dark" active-name="1" @on-select="onSelect">
           <div class="layout-logo"></div>
           <div class="layout-nav">
             <MenuItem name="1">
@@ -26,7 +26,7 @@
       </Header>
       <Layout :style="{padding: '0 50px'}">
         <Sider hide-trigger :style="{background: '#fff'}">
-          <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
+          <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']" @on-select="onSelect">
             <Submenu name="1">
               <template slot="title">
                 <Icon type="ios-navigate"></Icon>
@@ -54,9 +54,8 @@
             </Submenu>
           </Menu>
         </Sider>
-
         <Content>
-          <router-view v-on:Header="header" v-on:Sider="sider"></router-view>
+          <router-view></router-view>
         </Content>
 
       </Layout>
@@ -98,22 +97,24 @@
 
 <script>
   export default {
-    name: 'mainPage',
-    data() {
-      return {
-        header_show: true,
-        sider_show:true,
+    name: 'MainPage',
+    methods: {
+      onSelect(name) {
+        switch(name) {
+          case '1-1':
+            this.$router.push({ path: '/AdminMovieManage' });
+            break;
+          case '2-1':
+            this.$router.push({ path: '/admin/student' });
+            break;
+          case '2-2':
+            this.$router.push({ path: '/admin/tutor' });
+            break;
+        }
       }
-    },
+    }
   }
 </script>
 
 <style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-  }
 </style>
