@@ -64,7 +64,11 @@
         xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
         xmlhttp.send();
       },
-    }
+      created:function () {
+        this.$emit('header', false);
+      }
+    },
+
   }
 </script>
 

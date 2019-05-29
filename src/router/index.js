@@ -5,6 +5,7 @@ import Register from '@/components/Register'
 import adminMovieSchedule from '@/components/adminMovieSchedule'
 import adminMovieManage from '@/components/adminMovieManage'
 
+
 Vue.use(Router)
 
 export default new Router({
@@ -20,14 +21,21 @@ export default new Router({
       component: Register
     },
     {
-      path: '/adminMovieManage',
-      name: 'adminMovieManage',
-      component: adminMovieManage
+      path:'/mainPage',
+      name:'/mainPage',
+      component: mainPage,
+      children: [
+        {
+          path: '/adminMovieManage',
+          name: 'adminMovieManage',
+          component: () => import('@/views/adminMovieManage.vue')
+        },
+        {
+          path: '/adminMovieSchedule',
+          name: 'adminMovieSchedule',
+          component: () => import('@/views/adminMovieSchedule.vue')
+        }
+      ]
     },
-{
-  path: '/adminMovieSchedule',
-    name: 'adminMovieSchedule',
-  component: adminMovieSchedule
-}
   ],
 })

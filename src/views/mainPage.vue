@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="layout">
     <Layout>
-      <Header style="margin-top: 0" v-if="header_show">
+      <Header style="margin-top: 0" >
         <Menu mode="horizontal" theme="dark" active-name="1">
           <div class="layout-logo"></div>
           <div class="layout-nav">
@@ -25,7 +25,7 @@
         </Menu>
       </Header>
       <Layout :style="{padding: '0 50px'}">
-        <Sider hide-trigger :style="{background: '#fff'}" v-if="sider_show">
+        <Sider hide-trigger :style="{background: '#fff'}">
           <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
             <Submenu name="1">
               <template slot="title">
@@ -97,33 +97,23 @@
 </style>
 
 <script>
-export default {
-  name: 'App',
-  data() {
-    return {
-      header_show: true,
-      sider_show:true,
-    }
-  },
-  methods:{
-    //是否显示头部
-    header:function (bool) {
-      this.header_show = bool;
+  export default {
+    name: 'mainPage',
+    data() {
+      return {
+        header_show: true,
+        sider_show:true,
+      }
     },
-    //是否显示底部
-    sider:function (bool) {
-      this.sider_show = bool;
-    }
   }
-}
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+  }
 </style>
