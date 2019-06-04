@@ -1,6 +1,6 @@
 <template>
   <Card style="width:1000px;padding-left: 80px">
-    <Form ref="formInline" :model="formInline" :rules="ruleInline" inline style="padding-left: 20px">
+    <Form  inline style="padding-left: 20px">
       <FormItem label="选择电影" style="width:200px;margin-right: 150px;text-align: left">
         <Select v-model="movieModel" >
           <Option v-for="item in movieList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -34,15 +34,18 @@
           placeholder="选择时间范围">
         </el-time-picker>
       </FormItem>
+<Form>
+  <FormItem >
+    <Button type="primary" @click="addSchedule" style="margin-right: 50px">确认</Button>
+    <Button @click="handleReset('formValidate')" style="margin-right: 180px">重置</Button>
+  </FormItem>
+</Form>
 
     </Form>
-    <Form style="padding:30px">
-      <FormItem>
-        <Button type="primary" @click="handleSubmit('formValidate')" style="margin-right: 90px">确认</Button>
-        <Button @click="handleReset('formValidate')" style="margin-left: 10px">重置</Button>
-      </FormItem>
-    </Form>
+
   </Card>
+
+
 </template>
 
 <script>
@@ -99,6 +102,26 @@
         timeValue:  '',
       }
 
+    },
+    methods:{
+      addSchedule: function () {
+        //前端给后端的输入
+        var addScheduleList = {
+          hallName: this.hallModel,
+          movieName: this.movieModel,
+          startTime: this.timeValue[0],
+          endTime: this.timeValue[1],
+          fare: this.ticketValue,
+        }
+        console.log(addScheduleList)
+        axios.post('http://192.168.2.149:8080/InsertSchedule',addScheduleList)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+      }
     }
   }
 </script>

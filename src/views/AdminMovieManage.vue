@@ -5,18 +5,15 @@
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="70"
               style="width: 500px">
           <FormItem label="电影名称" prop="name" style="width: 300px">
-            <Input v-model="formValidate.name" placeholder=""></Input>
-          </FormItem>
-          <FormItem label="电影ID" prop="ID" style="width: 300px">
-            <Input v-model="formValidate.ID" placeholder=""></Input>
+            <Input v-model="formValidate.name" ></Input>
           </FormItem>
           <FormItem label="国家/地区" prop="country" style="width: 250px">
-            <Select v-model="model1" style="width:200px">
-              <Option v-for="item in countryList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Select v-model="formValidate.country" style="width: 230px">
+              <Option v-for="country in countryList" :value="country.value" :key="country.value">{{ country.label }}</Option>
             </Select>
           </FormItem>
           <FormItem label="电影语言" prop="language" style="width: 300px">
-            <Select v-model="formValidate.language" placeholder="">
+            <Select v-model="language">
               <Option value="simple-chinese">简体中文</Option>
               <Option value="english">英语</Option>
               <Option value="german">德语</Option>
@@ -45,27 +42,26 @@
                 -</Col>
               <Col span="5">
                 <FormItem prop="time">
-                  <TimePicker type="time" placeholder="选择时间" v-model="formValidate.time"></TimePicker>
+                  <TimePicker type="time" placeholder="选择时间" v-model="time"></TimePicker>
                 </FormItem>
               </Col>
             </Row>
           </FormItem>
-
           <FormItem label="电影导演" prop="nameOfDir" style="width: 300px">
             <Input v-model="formValidate.nameOfDir" placeholder="请输入导演名字"
             ></Input>
           </FormItem>
-          <Form ref="formDynamic" :model="formDynamic" :label-width="70" style="width: 300px">
+          <Form ref="addActors" :model="addActors" :label-width="70" style="width: 300px">
             <FormItem
-              v-for="(item, index) in formDynamic.items"
+              v-for="(item, index) in addActors.items"
               v-if="item.status"
               :key="index"
               :label="'演员 ' + item.index"
-              :prop="'items.' + index + '.value'"
+              :prop="'items.' + index + '.valueActor'"
               :rules="{required: true, message:'不能为空', trigger: 'blur'}">
               <Row>
                 <Col span="18">
-                  <Input type="text" v-model="item.value" placeholder="请输入演员名字"></Input>
+                  <Input type="text" v-model="item.valueActor" placeholder="请输入演员名字"></Input>
                 </Col>
                 <Col span="4" offset="1">
                   <Button @click="handleRemove(index)">删除</Button>
@@ -80,7 +76,12 @@
               </Row>
             </FormItem>
           </Form>
-
+          <FormItem label="上架状态">
+            <i-switch v-model="switchStatus" size="large" style="float:left; margin-top:7px">
+              <span slot="open">已上</span>
+              <span slot="close">未上</span>
+            </i-switch>
+          </FormItem>
           <FormItem label="影片类型" prop="type">
             <CheckboxGroup v-model="formValidate.type">
               <Checkbox label="喜剧"></Checkbox>
@@ -110,7 +111,7 @@
                    placeholder=""></Input>
           </FormItem>
           <FormItem>
-            <Button type="primary" @click="handleSubmit('formValidate')">确认</Button>
+            <Button type="primary" @click="movieAdd">确认</Button>
             <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
           </FormItem>
         </Form>
@@ -129,43 +130,26 @@
     overflow: hidden;
   }
 
-  .layout-logo {
-    width: 100px;
-    height: 30px;
-    background: #5b6270;
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    top: 15px;
-    left: 20px;
-  }
-
-  .layout-nav {
-    width: 420px;
-    margin: 0 auto;
-    margin-right: 20px;
-  }
-
-  .layout-footer-center {
-    text-align: center;
-  }
 </style>
 
 <script>
+ import axios from "axios"
   export default {
-    name: "ManagerMainWeb",
-    created: function () {
-      this.$emit('header', false);
-    },
+    name: "AdminMovieManage",
     data() {
       return {
+        switchStatus :false,
+        language:'',
+        starring:[],
+        time: '',
+
         formValidate: {
           name: '',
           ID: '',
           switch: true,
           type: [],
           date: '',
-          time: '',
+
           desc: '',
           country: '',
           model1: '',
@@ -185,17 +169,11 @@
             {required: true, message: 'ID不能为空', trigger: 'blur'},
             {type: 'email', message: '格式不正确', trigger: 'blur'}
           ],
-          city: [
-            {required: true, message: 'Please select the city', trigger: 'change'}
-          ],
           type: [
             {required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change'},
           ],
           date: [
-            {required: true, type: 'date', message: 'Please select the date', trigger: 'change'}
-          ],
-          time: [
-            {required: true, type: 'string', message: 'Please select time', trigger: 'change'}
+            {required: true, type: 'date', message: '请选择上映时间', trigger: 'change'}
           ],
           desc: [
             {required: true, message: '请输入一段介绍', trigger: 'blur'},
@@ -203,10 +181,10 @@
           ]
         },
         index: 1,
-        formDynamic: {
+        addActors: {
           items: [
             {
-              value: '',
+              valueActor: '',
               index: 1,
               status: 1
             }
@@ -412,16 +390,47 @@
       },
       handleAdd() {
         this.index++;
-        this.formDynamic.items.push({
-          value: '',
+        this.addActors.items.push({
+          valueActor : '',
           index: this.index,
           status: 1
         });
-        alert(typeof this.formValidate.duration);
-      },
+      } ,
       handleRemove(index) {
-        this.formDynamic.items[index].status = 0;
+        this.addActors.items[index].status = 0;
       },
+
+      //写接口了！
+      movieAdd: function () {
+        for( var i =0; i<this.addActors.items.length;i++){
+          console.log(this.starring)
+          console.log(this.addActors.items[i].valueActor)
+          this.starring.push(this.addActors.items[i].valueActor)
+        }
+        var movieAddList = {
+          name: this.formValidate.name,
+          country: this.formValidate.country,
+          language: this.language,
+          description: this.formValidate.desc,
+          duration: this.formValidate.duration,
+          posterUrl:'',
+          director: this.formValidate.nameOfDir,
+          starring: this.starring,
+        type: this.formValidate.type,
+        startDate:this.formValidate.date,
+          startTime:this.time,
+        status: this.switchStatus ,
+        }
+        console.log(movieAddList)
+        axios.post('http://192.168.2.149:8080/InsertMovie',movieAddList)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+      },
+
     }
   }
 </script>

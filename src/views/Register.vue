@@ -1,5 +1,5 @@
 <template>
-  <Card style="width:450px;margin: 0 auto">
+  <Card style="width:450pxmargin: 0 auto">
     <p slot="title">
       <Icon type="md-contact"></Icon>
       注册
@@ -30,13 +30,13 @@
     data () {
       const validatePass = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请输入密码'));
+          callback(new Error('请输入密码'))
         } else {
           if (this.formCustom.passwdCheck !== '') {
             // 对第二个密码框单独验证
-            this.$refs.formCustom.validateField('passwdCheck');
+            this.$refs.formCustom.validateField('passwdCheck')
           }
-          callback();
+          callback()
         }
       };
       const validatePassCheck = (rule, value, callback) => {

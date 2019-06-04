@@ -1,28 +1,31 @@
 <template>
-  <Card style="width:450px;margin: 100px auto">
-    <p slot="title">
-      <Icon type="md-contact"></Icon>
-      管理员登录
-    </p>
-    <Form ref="formInline" :model="formInline" :rules="ruleInline">
-      <FormItem prop="user">
-        <Input type="text" v-model="formInline.user" size="large" placeholder="Username">
-          <Icon type="ios-person-outline" slot="prepend"></Icon>
-        </Input>
-      </FormItem>
-      <FormItem prop="password">
-        <Input type="password" v-model="formInline.password" size="large" placeholder="Password">
-          <Icon type="ios-lock-outline" slot="prepend"></Icon>
-        </Input>
-      </FormItem>
-      <FormItem>
-        <Button type="primary" @click="handleSubmit('formInline')">登录</Button>
-      </FormItem>
-    </Form>
-  </Card>
+  <div class="container">
+    <Card style="width:450px;margin: 100px auto; background: rgba(255,255,255,0.5)">
+      <p slot="title">
+        <Icon type="md-contact"></Icon>
+        管理员登录
+      </p>
+      <Form ref="formInline" :model="formInline" :rules="ruleInline">
+        <FormItem prop="user">
+          <Input type="text" v-model="formInline.user" size="large" placeholder="Username">
+            <Icon type="ios-person-outline" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+        <FormItem prop="password">
+          <Input type="password" v-model="formInline.password" size="large" placeholder="Password">
+            <Icon type="ios-lock-outline" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+        <FormItem>
+          <Button type="primary" @click="handleSubmit('formInline')" onclick="">登录</Button>
+        </FormItem>
+      </Form>
+    </Card>
+  </div>
 </template>
 
 <script>
+  import axios from "axios"
   import adminApi from '../api/adminApi'
   export default {
     name: "Login",
@@ -45,42 +48,43 @@
     },
     methods: {
       handleSubmit(name) {
+        console.log(this.$refs)
         this.$refs[name].validate((valid) => {
-          if (valid) {
-            this.$Message.success('Success!');
-          } else {
-            this.$Message.error('Fail!');
+          if (!valid) {
+            this.$Message.error('账号或密码格式错误!');
           }
         });
-        var xmlhttp = new XMLHttpRequest();
+
+        var user = this.formInline.user;
+        var psd = this.formInline.password;
         var _this = this;
-        xmlhttp.onreadystatechange = function () {
-          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            if (JSON.parse(xmlhttp.responseText)) {
-
-            }
-          }
+        var data = {
+          username: user,
+          password: psd,
         };
-        xmlhttp.open('POST', 'http://localhost:8082/VerifyAdmin', false);
-        xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
-        xmlhttp.send();
-      },
-
-      created() {
-        adminApi.VerifyAdmin(
-          {
-            username: '',
-            password: '',
-          },
-          (res) => {
-            this.$emit('header', false);
-          }
-        )
-      },
+        axios.post('http://192.168.2.149:8080/VerifyAdmin', data)
+          .then(function (response) {
+            console.log(response);
+            //console.log($router);
+            _this.$router.push({ path: '/AdminMovieList'});
+          })
+          .catch(function (error) {
+            // console.log(error);
+          });
+      }
     }
   }
 </script>
 
 <style scoped>
+  .container {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    background-image: url("../assets/login_background.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+  }
 
 </style>

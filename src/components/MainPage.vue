@@ -3,8 +3,8 @@
     <Layout>
       <Header style="margin-top: 0" >
         <Menu mode="horizontal" theme="dark" active-name="1" @on-select="onSelect">
-          <div class="layout-logo"></div>
           <div class="layout-nav">
+            <Avatar icon="ios-person" size="large" />
             <MenuItem name="1">
               <Icon type="ios-navigate"></Icon>
               电影管理
@@ -15,12 +15,9 @@
             </MenuItem>
             <MenuItem name="3">
               <Icon type="ios-analytics"></Icon>
-              Item 3
+              影厅管理
             </MenuItem>
-            <MenuItem name="4">
-              <Icon type="ios-paper"></Icon>
-              Item 4
-            </MenuItem>
+
           </div>
         </Menu>
       </Header>
@@ -32,25 +29,24 @@
                 <Icon type="ios-navigate"></Icon>
                 电影管理
               </template>
-              <MenuItem name="1-1">新增电影</MenuItem>
-              <MenuItem name="1-2">修改信息</MenuItem>
-              <MenuItem name="1-3">删除电影</MenuItem>
+              <MenuItem name="1-1">查看电影</MenuItem>
+              <MenuItem name="1-2">新增电影</MenuItem>
             </Submenu>
             <Submenu name="2">
               <template slot="title">
                 <Icon type="ios-keypad"></Icon>
                 排片管理
               </template>
-              <MenuItem name="2-1">新增排片</MenuItem>
-              <MenuItem name="2-2">修改排片</MenuItem>
+              <MenuItem name="2-1">查看排片</MenuItem>
+              <MenuItem name="2-2">新增排片</MenuItem>
             </Submenu>
             <Submenu name="3">
               <template slot="title">
                 <Icon type="ios-analytics"></Icon>
-                Item 3
+                影厅管理
               </template>
-              <MenuItem name="3-1">Option 1</MenuItem>
-              <MenuItem name="3-2">Option 2</MenuItem>
+              <MenuItem name="3-1">查看影厅</MenuItem>
+              <MenuItem name="3-2">新增影厅</MenuItem>
             </Submenu>
           </Menu>
         </Sider>
@@ -59,7 +55,7 @@
         </Content>
 
       </Layout>
-      <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
+      <Footer class="layout-footer-center">2019.6 &copy; Happy67</Footer>
     </Layout>
   </div>
 </template>
@@ -73,16 +69,6 @@
     overflow: hidden;
   }
 
-  .layout-logo {
-    width: 100px;
-    height: 30px;
-    background: #5b6270;
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    top: 15px;
-    left: 20px;
-  }
 
   .layout-nav {
     width: 420px;
@@ -101,15 +87,37 @@
     methods: {
       onSelect(name) {
         switch(name) {
+          case '1':
+            this.$router.push({ path: '/AdminMovieList' });
+            break;
           case '1-1':
+            this.$router.push({ path: '/AdminMovieList' });
+            break;
+          case '1-2':
             this.$router.push({ path: '/AdminMovieManage' });
             break;
+          case '2':
+            this.$router.push({ path: '/AdminScheduleList' });
+            break;
           case '2-1':
-            this.$router.push({ path: '/admin/student' });
+            this.$router.push({ path: '/AdminScheduleList' });
             break;
           case '2-2':
-            this.$router.push({ path: '/admin/tutor' });
+            this.$router.push({ path: '/AdminMovieSchedule' });
             break;
+          case '3':
+            this.$router.push({ path: '/AdminHallCheck' });
+            break;
+          case '3-1':
+            this.$router.push({ path: '/AdminHallCheck' });
+            break;
+          case '3-2':
+            this.$router.push({ path: '/AdminHallAdd' });
+            break;
+        }
+      },
+      data(){
+        return{
         }
       }
     }

@@ -1,5 +1,6 @@
 <template>
-  <Button type="primary">Primary</Button>
+  <MainPage menuActiveName="1">
+  </MainPage>
 </template>
 
 <script>
