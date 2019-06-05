@@ -402,10 +402,17 @@
 
       //写接口了！
       movieAdd: function () {
+        var numStatus = 0;
         for( var i =0; i<this.addActors.items.length;i++){
           console.log(this.starring)
           console.log(this.addActors.items[i].valueActor)
           this.starring.push(this.addActors.items[i].valueActor)
+        }
+        //把选择状态的按钮转换为数字
+         function judgeStatus(){
+          if(this.switchStatus === true){
+            numStatus = 1;
+          }
         }
         var movieAddList = {
           name: this.formValidate.name,
@@ -419,7 +426,7 @@
         type: this.formValidate.type,
         startDate:this.formValidate.date,
           startTime:this.time,
-        status: this.switchStatus ,
+        status: numStatus ,
         }
         console.log(movieAddList)
         axios.post('http://192.168.2.149:8080/InsertMovie',movieAddList)

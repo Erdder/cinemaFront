@@ -66,17 +66,7 @@
         },
 
         //前端给后端排片搜索条件
-        dataToPost: [
-          {
-            startDate: this.formItem.date[0],
-            endDate: this.formItem.date[1],
-            startTime: this.formItem.time[0],
-            endTime: this.formItem.time[1],
-            hallId: this.formItem.selectHall,
-            movieId: this.formItem.selectMovie,
-          },
 
-        ],
 
         //后端要首先给前端影厅和电影名列表
         hallNameList: [
@@ -110,7 +100,6 @@
 
     methods: {
       askForHall() {
-        console.log(this.formItem.date)
         var _this = this;
         axios.get('http://172.28.202.212:8080/GetHall')
           .then(function (response) {
@@ -143,8 +132,18 @@
           })
       },
       askForSchedule() {
+        var dataToPost =  [
+          {
+            startDate: this.formItem.date[0],
+            endDate: this.formItem.date[1],
+            startTime: this.formItem.time[0],
+            endTime: this.formItem.time[1],
+            hallId: this.formItem.selectHall,
+            movieId: this.formItem.selectMovie,
+          },
+        ]
         var _this = this;
-        axios.post('http://172.28.202.212:8080/GetScheduleList', this.dataToPost)
+        axios.post('http://172.28.202.212:8080/GetScheduleList', dataToPost)
           .then(function (response) {
             _this.data = response;
           })

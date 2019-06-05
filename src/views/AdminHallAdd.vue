@@ -3,7 +3,7 @@
     <Layout :style="{padding: '0 20px'}">
       <Content :style="{padding: '24px ', minHeight: '280px', background: '#fff'}">
         <h1 style="text-align: left">新增影厅</h1>
-        <Card style="width:400px;height:250px">
+        <Card style="width:400px;height:300px">
           <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="70"
                 style="width: 500px">
             <FormItem label="影厅名称" prop="name" style="width: 300px">

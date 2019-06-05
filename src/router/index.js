@@ -54,6 +54,11 @@ export default new Router({
           name: 'AdminScheduleList',
           component: () => import('../views/AdminScheduleList.vue')
         },
+        {
+          path: '/AdminVipCard',
+          name: 'AdminVipCard',
+          component: () => import('../views/AdminVipCard.vue')
+        },
       ]
     },
   ],
