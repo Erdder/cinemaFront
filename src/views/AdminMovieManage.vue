@@ -3,13 +3,14 @@
     <Layout :style="{padding: '0 20px'}">
       <Content :style="{padding: '24px ', minHeight: '280px', background: '#fff'}">
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="70"
-              style="width: 500px">
+                  style="width: 500px">
           <FormItem label="电影名称" prop="name" style="width: 300px">
-            <Input v-model="formValidate.name" ></Input>
+            <Input v-model="formValidate.name"></Input>
           </FormItem>
           <FormItem label="国家/地区" prop="country" style="width: 250px">
             <Select v-model="formValidate.country" style="width: 230px">
-              <Option v-for="country in countryList" :value="country.value" :key="country.value">{{ country.label }}</Option>
+              <Option v-for="country in countryList" :value="country.value" :key="country.value">{{ country.label }}
+              </Option>
             </Select>
           </FormItem>
           <FormItem label="电影语言" prop="language" style="width: 300px">
@@ -39,7 +40,8 @@
                 </FormItem>
               </Col>
               <Col span="2" style="text-align: center">
-                -</Col>
+                -
+              </Col>
               <Col span="5">
                 <FormItem prop="time">
                   <TimePicker type="time" placeholder="选择时间" v-model="time"></TimePicker>
@@ -82,6 +84,20 @@
               <span slot="close">未上</span>
             </i-switch>
           </FormItem>
+          <FormItem label="上传海报" prop="posterUrl" style="margin:auto 0 auto 0">
+          <Upload
+            ref ="upload"
+            :format="['jpg','jpeg','png']"
+            :max-size="2048"
+            type="drag"
+            action="https://sm.ms/api/upload"
+            style="display: inline-block;width:200px;">
+            <div style="padding: 20px auto 10px 200px">
+              <Icon type="ios-cloud-upload" size="52" style="color: #3399ff" @change="getImg"></Icon>
+              <p>点击或拖拽到此处来上传</p>
+            </div>
+          </Upload>
+        </FormItem>
           <FormItem label="影片类型" prop="type">
             <CheckboxGroup v-model="formValidate.type">
               <Checkbox label="喜剧"></Checkbox>
@@ -134,13 +150,16 @@
 
 <script>
   import axios from "axios"
+  import Upload from "element-ui/packages/upload/src/upload";
+
   export default {
     name: "AdminMovieManage",
+    components: {Upload},
     data() {
       return {
-        switchStatus :false,
-        language:'',
-        starring:[],
+        switchStatus: false,
+        language: '',
+        starring: [],
         time: '',
 
         formValidate: {
@@ -153,7 +172,7 @@
           desc: '',
           country: '',
           model1: '',
-          duration:0,
+          duration: 0,
         },
         ruleValidate: {
           name: [
@@ -373,6 +392,20 @@
           {value: "ZR", label: "扎伊尔"},
           {value: "ZM", label: "赞比亚"}
         ],
+        picInfo: {
+          code:"success",
+          msg:"",     //如果成功则为空，失败就有错误信息了
+          width: 1157,
+          height: 680,
+          filename: "image_2015-08-26_10-54-48.png",
+          storename: "56249afa4e48b.png",
+          size: 69525,
+          path: "/2015/10/19/56249afa4e48b.png",
+          hash: "nLbCw63NheaiJp1",
+          timestamp: 1445239546,
+          url: "https://ooo.0o0.ooo/2015/10/19/56249afa4e48b.png",
+          delete: "https://sm.ms/api/delete/nLbCw63NheaiJp1"
+        }
       }
     },
     methods: {
@@ -391,45 +424,71 @@
       handleAdd() {
         this.index++;
         this.addActors.items.push({
-          valueActor : '',
+          valueActor: '',
           index: this.index,
           status: 1
         });
-      } ,
+      },
       handleRemove(index) {
         this.addActors.items[index].status = 0;
+      },
+      getImg() {
+        /* 需要注意的是在ajax中使用formdata需要配置anync:true,contentType:false,processData:false,
+        在axios中不配置也能上传
+        还有一个地方需要注意的是formData.append(name,value),里面的name对应的是input 的name值，
+        value对应的是input的files[0]，不是input.val(),对于的type=file的input，
+        图片是在input的FileList里面，
+        这里用的是this.$refs.upload.files[0]，
+        这是因为在vue中使用this.$refs.refname来获取dom的真实节点，
+        用jq或者js的获取节点的方法是拿不到的，*/
+        var _this = this;
+        var formData = new FormData();
+        formData.append('file', this.$refs.upload.files[0]);
+        axios({
+          method: 'post',
+          url: 'https://sm.ms/api/upload',
+          anync: true,
+          contentType: false,
+          processData: false,
+          data: formData
+        }).then(function (res) {
+          console.log(res)
+          _this.picInfo = res
+      })
       },
 
       //写接口了！
       movieAdd: function () {
         var numStatus = 0;
-        for( var i =0; i<this.addActors.items.length;i++){
-          console.log(this.starring)
-          console.log(this.addActors.items[i].valueActor)
+        for (var i = 0; i < this.addActors.items.length; i++) {
+          console.log(this.starring);
+          console.log(this.addActors.items[i].valueActor);
           this.starring.push(this.addActors.items[i].valueActor)
         }
+
         //把选择状态的按钮转换为数字
-         function judgeStatus(){
-          if(this.switchStatus === true){
+        function judgeStatus() {
+          if (this.switchStatus === true) {
             numStatus = 1;
           }
         }
+
         var movieAddList = {
           name: this.formValidate.name,
           country: this.formValidate.country,
           language: this.language,
           description: this.formValidate.desc,
           duration: this.formValidate.duration,
-          posterUrl:'',
+          posterUrl: this.picInfo.url,
           director: this.formValidate.nameOfDir,
           starring: this.starring,
-        type: this.formValidate.type,
-        startDate:this.formValidate.date,
-          startTime:this.time,
-        status: numStatus ,
-        }
-        console.log(movieAddList)
-        axios.post('http://172.28.193.125:8080/InsertMovie',movieAddList)
+          type: this.formValidate.type,
+          startDate: this.formValidate.date,
+          startTime: this.time,
+          status: numStatus,
+        };
+        console.log(movieAddList);
+        axios.post('http://172.28.193.125:8080/InsertMovie', movieAddList)
           .then(function (response) {
             console.log(response);
           })
@@ -441,4 +500,4 @@
     }
   }
 </script>
-//todo posturl
+

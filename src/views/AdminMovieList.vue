@@ -64,7 +64,7 @@
             startDate: '2019/4/4',
             duration: '90',
             status: 1
-          }
+          },
         ]
       }
     },
@@ -87,13 +87,17 @@
         this.$router.push({path:'AdminMovieDetail'})
       }
     },
+
+
     created() {
       var _this = this;
-      adminApi.GetMovieList(
-        (res) => {
+      adminApi.GetMovieList()
+        .then(res =>{
           _this.movieList = res;
-        }
-      )
+        })
+        .catch(err =>{
+          console.log(error);
+        });
     }
   }
 </script>

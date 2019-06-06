@@ -63,15 +63,16 @@
           password: psd,
         };
 
-        /*
-          adminApi.VerifyAdmin(data).then(res =>{
+
+          adminApi.VerifyAdmin(data)
+            .then(res =>{
             _this.$router.push({ path: '/AdminMovieList'});
           })
             .catch(err =>{
               console.log(error);
             });
 
-
+/*
         axios.post('http://172.28.193.125:8080/VerifyAdmin', data)
           .then(function (response) {
             console.log(response);

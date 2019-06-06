@@ -86,12 +86,14 @@ export default {
       data: data
     }.then(success))
   },
-  GetMovieList(success) {
-    request({
-      url:'/AdminMovieList',
-      method:'get',
-    }.then(success))
+
+  GetMovieList() {
+    return request({
+      url: '/AdminMovieList',
+      method: 'Get',
+    })
   },
+
   GetScheduleList(success) {
     request({
       url:'/AdminMovieList',

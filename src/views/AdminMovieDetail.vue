@@ -61,6 +61,16 @@
           return status === 1 ? 'success' : 'primary';
         },
 
+        created() {
+          var _this = this;
+          adminApi.GetMovieList()
+            .then(res =>{
+              _this.movieList = res;
+            })
+            .catch(err =>{
+              console.log(error);
+            });
+        }
 
       },
     }
