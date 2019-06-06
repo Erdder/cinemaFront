@@ -87,13 +87,10 @@
                 discount: 88
               },
             ],
-            editIndex: -1,  //当前聚焦的输入框的行数
+            editIndex: -1,            //当前聚焦的输入框的行数
             editName: '',
             editPlan: '',
 
-            cardList:[
-
-            ]
           }
       },
       created(){

@@ -124,7 +124,7 @@
             feature: this.formValidate.feature
         }
         console.log(addHallList)
-        axios.post('http://192.168.2.149:8080/InsertHall',addHallList)
+        axios.post('http://172.28.193.125:8080/InsertHall',addHallList)
           .then(function (response) {
             console.log(response);
           })

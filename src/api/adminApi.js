@@ -1,13 +1,15 @@
 import request from "../utils/request"
+import { get,post } from '../utils/request'
 
 export default {
-  VerifyAdmin(data, success) {
-    request({
+  VerifyAdmin(params) {
+    return request({
       url: '/VerifyAdmin',
-      method: 'post',
-      data: data
-    }.then(success))
+      methods: 'Get',
+      params:params
+    })
   },
+
   GetHall(success) {
     request({
       url:'/AdminHallCheck',

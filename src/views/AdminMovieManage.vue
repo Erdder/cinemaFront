@@ -133,7 +133,7 @@
 </style>
 
 <script>
- import axios from "axios"
+  import axios from "axios"
   export default {
     name: "AdminMovieManage",
     data() {
@@ -429,7 +429,7 @@
         status: numStatus ,
         }
         console.log(movieAddList)
-        axios.post('http://192.168.2.149:8080/InsertMovie',movieAddList)
+        axios.post('http://172.28.193.125:8080/InsertMovie',movieAddList)
           .then(function (response) {
             console.log(response);
           })
@@ -441,3 +441,4 @@
     }
   }
 </script>
+//todo posturl

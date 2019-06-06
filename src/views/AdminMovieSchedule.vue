@@ -49,6 +49,7 @@
 </template>
 
 <script>
+  import axios from "axios"
   export default {
     name: "adminMovieSchedule",
     data() {
@@ -113,8 +114,8 @@
           endTime: this.timeValue[1],
           fare: this.ticketValue,
         }
-        console.log(addScheduleList)
-        axios.post('http://192.168.2.149:8080/InsertSchedule',addScheduleList)
+        console.log(addScheduleList),
+        axios.post('http://172.28.193.125:8080/InsertSchedule',addScheduleList)
           .then(function (response) {
             console.log(response);
           })

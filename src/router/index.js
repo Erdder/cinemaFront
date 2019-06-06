@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import AdminLogin from '../views/AdminLogin.vue'
-import Register from '../views/Register'
 import AdminMain from '../views/AdminMain'
+import AdminRegister from '../views/AdminRegister.vue'
 
 
 Vue.use(Router)
@@ -13,6 +13,11 @@ export default new Router({
       path: '/',
       name: 'AdminLogin',
       component: AdminLogin,
+    },
+    {
+      path: '/AdminRegister',
+      name: 'AdminRegister',
+      component: AdminRegister,
     },
     {
       path:'/AdminMain',

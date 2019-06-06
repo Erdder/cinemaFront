@@ -62,7 +62,16 @@
           username: user,
           password: psd,
         };
-        axios.post('http://192.168.2.149:8080/VerifyAdmin', data)
+
+          adminApi.VerifyAdmin(data).then(res =>{
+            _this.$router.push({ path: '/AdminMovieList'});
+          })
+            .catch(err =>{
+              console.log(error);
+            });
+
+
+        axios.post('http://172.28.193.125:8080/VerifyAdmin', data)
           .then(function (response) {
             console.log(response);
             //console.log($router);
@@ -71,6 +80,7 @@
           .catch(function (error) {
             // console.log(error);
           });
+
       }
     }
   }
