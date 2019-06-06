@@ -63,6 +63,7 @@
           password: psd,
         };
 
+        /*
           adminApi.VerifyAdmin(data).then(res =>{
             _this.$router.push({ path: '/AdminMovieList'});
           })
@@ -80,7 +81,7 @@
           .catch(function (error) {
             // console.log(error);
           });
-
+*/
       }
     }
   }
