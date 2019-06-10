@@ -74,6 +74,16 @@ export default new Router({
           name: 'AdminDataList',
           component: () => import('../views/AdminDataList.vue')
         },
+        {
+          path: '/employeeAdd',
+          name: 'employeeAdd',
+          component: () => import('../views/employeeAdd.vue')
+        },
+        {
+          path: '/employeeList',
+          name: 'employeeList',
+          component: () => import('../views/employeeList.vue')
+        },
 
       ]
     },

@@ -27,6 +27,10 @@
                 <Icon type="ios-bookmarks"></Icon>
                 数据管理
               </MenuItem>
+            <MenuItem name="6">
+              <Icon type="ios-body"></Icon>
+              员工管理
+            </MenuItem>
           </div>
         </Menu>
       </Header>
@@ -73,6 +77,14 @@
               <MenuItem name="5-1">想看详情</MenuItem>
               <MenuItem name="5-2">优惠活动</MenuItem>
             </Submenu>
+            <Submenu name="6">
+              <template slot="title">
+                <Icon type="ios-body"></Icon>
+                员工管理
+              </template>
+              <MenuItem name="6-1">查看员工</MenuItem>
+              <MenuItem name="6-2">新增员工</MenuItem>
+            </Submenu>
           </Menu>
         </Sider>
         <Content>
@@ -105,7 +117,7 @@
   }
 
   .layout-nav {
-    width: 600px;
+    width: 750px;
     margin: 0 auto;
     margin-right: 20px;
   }
@@ -157,6 +169,15 @@
             break;
           case '5-1':
             this.$router.push({ path: '/AdminDataList' });
+            break;
+          case '5-2':
+            this.$router.push({ path: '/AdminCoupon' });
+            break;
+          case '6-1':
+            this.$router.push({ path: '/employeeList' });
+            break;
+          case '6-2':
+            this.$router.push({ path: '/employeeAdd' });
             break;
         }
       },
