@@ -64,6 +64,17 @@ export default new Router({
           name: 'AdminVipCard',
           component: () => import('../views/AdminVipCard.vue')
         },
+        {
+          path: '/AdminCoupon',
+          name: 'AdminCoupon',
+          component: () => import('../views/AdminCoupon.vue')
+        },
+        {
+          path: '/AdminDataList',
+          name: 'AdminDataList',
+          component: () => import('../views/AdminDataList.vue')
+        },
+
       ]
     },
   ],

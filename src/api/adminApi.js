@@ -121,6 +121,22 @@ export default {
       data: data
     }.then(success))
   },
+  //所有电影
+  GetLikeMarkList(params) {
+    return request({
+      url: '/AdminDataList',
+      method: 'Get',
+      params: params,
+    })
+  },
+      //单部电影
+      GetLikeMarkDetail(params) {
+      return request({
+        url: '/AdminDataList',
+        method: 'Get',
+        params:params,
+      })
+  },
 
 
 }

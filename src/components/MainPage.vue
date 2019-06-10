@@ -2,7 +2,7 @@
   <div  class="layout">
     <Layout>
       <Header >
-        <Menu  mode="horizontal" theme="dark" active-name="1" @on-select="onSelect">
+        <Menu  mode="horizontal" theme="dark" active-name="1" @on-select="onSelect" style="text-align: left">
           <div class="layout-logo">
             <Avatar icon="ios-person" size="large" style="margin-bottom: 50px"/>
           </div>
@@ -23,6 +23,10 @@
               <Icon type="ios-paper"></Icon>
               活动管理
             </MenuItem>
+              <MenuItem name="5">
+                <Icon type="ios-bookmarks"></Icon>
+                数据管理
+              </MenuItem>
           </div>
         </Menu>
       </Header>
@@ -61,6 +65,14 @@
               <MenuItem name="4-1">会员卡</MenuItem>
               <MenuItem name="4-2">优惠活动</MenuItem>
             </Submenu>
+            <Submenu name="5">
+              <template slot="title">
+                <Icon type="ios-bookmarks"></Icon>
+                数据管理
+              </template>
+              <MenuItem name="5-1">想看详情</MenuItem>
+              <MenuItem name="5-2">优惠活动</MenuItem>
+            </Submenu>
           </Menu>
         </Sider>
         <Content>
@@ -93,10 +105,11 @@
   }
 
   .layout-nav {
-    width: 500px;
+    width: 600px;
     margin: 0 auto;
     margin-right: 20px;
   }
+
 
   .layout-footer-center {
     text-align: center;
@@ -138,6 +151,12 @@
             break;
           case '4-1':
             this.$router.push({ path: '/AdminVipCard' });
+            break;
+          case '4-2':
+            this.$router.push({ path: '/AdminCoupon' });
+            break;
+          case '5-1':
+            this.$router.push({ path: '/AdminDataList' });
             break;
         }
       },

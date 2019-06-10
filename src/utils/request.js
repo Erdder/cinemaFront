@@ -22,15 +22,15 @@ axios.interceptors.request.use(
 
 //响应拦截器
 axios.interceptors.response.use(
-  response =>{
-    if (response.status === 200){
+  response => {
+    if (response.status === 200) {
       return Promise.resolve(response);
-    }else{
+    } else {
       return Promise.reject(response);
     }
   },
   error => {
-    if (error.response.status){
+    if (error.response.status) {
       switch (error.response.status) {
         case 404:
           Toast({
@@ -43,39 +43,42 @@ axios.interceptors.response.use(
       return Promise.reject(error.response);
     }
   }
-  );
+);
 
 //对外接口
-export function  request({method, url, params}){
-  if(method === 'Get'){
-    return get(url,params);
-  }else if(method === 'Post'){
-    return post(url,params);
-  }
-}
+export default {
+  request({method, url, params}) {
+    if (method === 'Get') {
+      return get(url, params);
+    } else if (method === 'Post') {
+      return post(url, params);
+    }
+  },
 
 //封装get方法
-function get(url,params) {
-  return new Promise((resolve, reject) => {
-    axios.get(url, params)
-      .then(res => {
-        resolve(res.data);
-      }).catch(err => {
-      reject(err.data);
-    })
-  });
-}
+  get(url, params) {
+    return new Promise((resolve, reject) => {
+      axios.get(url, params)
+        .then(res => {
+          resolve(res.data);
+        }).catch(err => {
+        reject(err.data);
+      })
+    });
+  },
 
 //封装post方法
-export function post(url, params){
-  return new Promise((resolve,reject) =>{
-    axios.post(url, QS.stringify(params))
-      .then(res => {
-        resolve(res.data);
-      })
-      .catch(err =>{
-        reject(err.data)
-      })
-  });
-}
+  post(url, params) {
+    return new Promise((resolve, reject) => {
+      axios.post(url, QS.stringify(params))
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err.data)
+        })
+    });
+  }
 
+
+}

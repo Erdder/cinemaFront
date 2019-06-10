@@ -39,14 +39,6 @@
                   <DatePicker type="date" placeholder="选择日期" v-model="formValidate.date"></DatePicker>
                 </FormItem>
               </Col>
-              <Col span="2" style="text-align: center">
-                -
-              </Col>
-              <Col span="5">
-                <FormItem prop="time">
-                  <TimePicker type="time" placeholder="选择时间" v-model="time"></TimePicker>
-                </FormItem>
-              </Col>
             </Row>
           </FormItem>
           <FormItem label="电影导演" prop="nameOfDir" style="width: 300px">
@@ -160,7 +152,6 @@
         switchStatus: false,
         language: '',
         starring: [],
-        time: '',
 
         formValidate: {
           name: '',
@@ -484,7 +475,6 @@
           starring: this.starring,
           type: this.formValidate.type,
           startDate: this.formValidate.date,
-          startTime: this.time,
           status: numStatus,
         };
         console.log(movieAddList);
