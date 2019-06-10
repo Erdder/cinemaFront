@@ -16,7 +16,7 @@
     <div style="width: 750px; text-align: justify;margin-top: 5px">
       <p><strong>简介：</strong>{{movieDetail.description}}</p>
       <Button type="primary" @click="editMovie">修改</Button>
-      <Button type="error">下架</Button>
+      <Button type="error" @click="deleteMovie">下架</Button>
       <p><strong>时长：</strong>{{movieDetail.duration}}</p>
       <p><strong>上映时间：</strong>{{movieDetail.startDate}}</p>
       <p><strong>国家/地区：</strong>{{movieDetail.country}}</p>
@@ -146,9 +146,11 @@
   import adminApi from '../api/adminApi.js'
   import axios from "axios"
   import echarts from "echarts"
+
     export default {
         name: "AdminMovieDetail",
       created() {
+          console.log(this.movieDetail);
         this.movieDetail = JSON.parse(localStorage.getItem('movieDetail'));
       },
       mounted(){
@@ -451,7 +453,7 @@
               {
                 type : 'value',
                 axisLabel : {
-                  formatter: '{value} °C'
+                  formatter: '{value} '
                 }
               }
             ],
@@ -478,6 +480,15 @@
         },
         editMovie(){
           this.editMovieVisible = true;
+        },
+        deleteMovie(){
+          adminApi.VerifyAdmin(this.movieDetail.id)
+            .then(res =>{
+              console.log(res);
+            })
+            .catch(err =>{
+              console.log(err);
+            });
         }
       },
     }

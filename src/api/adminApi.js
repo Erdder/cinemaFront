@@ -79,11 +79,11 @@ export default {
       data: data
     }.then(success))
   },
-  DeleteMovie(data,success) {
+  DeleteMovie(params) {
     request({
       url:'/AdminMovieManage',
-      method:'post',
-      data: data
+      method:'Get',
+      params: params
     }.then(success))
   },
 
