@@ -21,9 +21,9 @@
       <p><strong>上映时间：</strong>{{movieDetail.startDate}}</p>
       <p><strong>国家/地区：</strong>{{movieDetail.country}}</p>
       <p><strong>语言：</strong>{{movieDetail.language}}</p>
-      <p><strong>类型：</strong>{{movieDetail.type}}</p>
+      <p><strong>类型：</strong>{{movieDetail.type.toString().replace(/,/g,'/')}}</p>
       <p><strong>导演：</strong>{{movieDetail.director}}</p>
-      <p><strong>主演：</strong>{{movieDetail.starring}}</p>
+      <p><strong>主演：</strong>{{movieDetail.starring.toString().replace(/,/g,'/')}}</p>
     </div>
     </div>
   </Card>
@@ -33,7 +33,7 @@
     <Modal
       v-model="editMovieVisible"
       title="修改电影"
-      @on-ok=""
+      @on-ok="updateMovie"
       @on-cancel="">
       <Form v-model="movieDetail" :rules="ruleValidate" :label-width="70"
             style="width: 500px">
@@ -42,22 +42,22 @@
         </FormItem>
         <FormItem label="国家/地区" style="width: 250px">
           <Select v-model="movieDetail.country" style="width: 230px">
-            <Option v-for="country in countryList" :value="country.value" :key="country.value">{{ country.label }}
+            <Option v-for="country in countryList" :value="country.label" :key="country.label">{{ country.label }}
             </Option>
           </Select>
         </FormItem>
         <FormItem label="电影语言" style="width: 300px">
           <Select v-model="movieDetail.language">
-            <Option value="simple-chinese">简体中文</Option>
-            <Option value="english">英语</Option>
-            <Option value="german">德语</Option>
-            <Option value="french">法语</Option>
-            <Option value="arabic">阿拉伯语</Option>
-            <Option value="spanish">西班牙语</Option>
-            <Option value="japanese">日语</Option>
-            <Option value="korean">韩语(朝鲜语)</Option>
-            <Option value="portuguese">葡萄牙语</Option>
-            <Option value="russian">俄语</Option>
+            <Option value="简体中文">简体中文</Option>
+            <Option value="英语">英语</Option>
+            <Option value="德语">德语</Option>
+            <Option value="法语">法语</Option>
+            <Option value="阿拉伯语">阿拉伯语</Option>
+            <Option value="西班牙语">西班牙语</Option>
+            <Option value="日语">日语</Option>
+            <Option value="韩语">韩语(朝鲜语)</Option>
+            <Option value="葡萄牙语">葡萄牙语</Option>
+            <Option value="俄语">俄语</Option>
           </Select>
         </FormItem>
         <FormItem label="电影时长" style="width: 300px; text-align: left">
@@ -65,7 +65,7 @@
             <span slot="append">分钟</span>
           </Input>
         </FormItem>
-        <FormItem label="上映时间" style="width: 530px">
+        <FormItem label="上映时间" style="width: 600px">
           <Row>
             <Col span="5">
               <FormItem>
@@ -81,7 +81,6 @@
         <Form ref="addActors" :model="addActors" :label-width="70" style="width: 300px">
           <FormItem
             v-for="(item, index) in addActors.items"
-            v-if="item.status"
             :key="index"
             :label="'演员 ' + item.index"
             :prop="'items.' + index + '.valueActor'"
@@ -392,9 +391,17 @@
             {value: "ZR", label: "扎伊尔"},
             {value: "ZM", label: "赞比亚"}
           ],
-          addActors: [],
+          addActors: {
+            items: [
+              /*{
+                valueActor: '',
+                index: 1,
+              }*/
+            ]
+          },
           switchStatus:false,
-          editMovieVisible:false
+          editMovieVisible:false,
+          index: 1,
         }
       },
       methods: {
@@ -479,17 +486,53 @@
           this.chart.setOption(option);
         },
         editMovie(){
+          var _this = this;
+          this.addActors.items = [];
+          this.index = 1;
+          this.movieDetail.starring.forEach(function (actor) {
+            _this.addActors.items.push({
+              index:_this.index,
+              valueActor:actor
+            })
+            _this.index++;
+          })
+          this.switchStatus = (this.movieDetail.status === 1);
           this.editMovieVisible = true;
         },
         deleteMovie(){
-          adminApi.VerifyAdmin(this.movieDetail.id)
-            .then(res =>{
-              console.log(res);
+          axios.get("http://172.28.193.125:8080/DeleteMovie",this.movieDetail.id)
+            .then(function (response) {
+              this.$Message.info('下架成功');
+            }).catch(function (response) {
+              console.error(response)
+          })
+        },
+        updateMovie(){
+          var _this = this;
+          this.movieDetail.starring = [];
+          this.addActors.items.forEach(function (actor) {
+            _this.movieDetail.starring.push(actor.valueActor)
+          })
+          this.movieDetail.status = this.switchStatus===true?1:0;
+          axios.post('http://172.28.193.125:8080/UpdateMovie',this.movieDetail)
+            .then(function (response) {
+              this.$message.info("修改成功！");
             })
-            .catch(err =>{
-              console.log(err);
-            });
-        }
+            .catch(function (error) {
+              console.log(error);
+            })
+        },
+        handleAdd() {
+          this.addActors.items.push({
+            valueActor: '',
+            index: this.index,
+          });
+          this.index++;
+        },
+        handleRemove(index) {
+          this.addActors.items.splice(index,1);
+          this.index--;
+        },
       },
     }
 </script>

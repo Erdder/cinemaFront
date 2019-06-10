@@ -9,22 +9,22 @@
           </FormItem>
           <FormItem label="国家/地区" prop="country" style="width: 250px">
             <Select v-model="formValidate.country" style="width: 230px">
-              <Option v-for="country in countryList" :value="country.value" :key="country.value">{{ country.label }}
+              <Option v-for="country in countryList" :value="country.label" :key="country.label">{{ country.label }}
               </Option>
             </Select>
           </FormItem>
           <FormItem label="电影语言" prop="language" style="width: 300px">
             <Select v-model="language">
-              <Option value="simple-chinese">简体中文</Option>
-              <Option value="english">英语</Option>
-              <Option value="german">德语</Option>
-              <Option value="french">法语</Option>
-              <Option value="arabic">阿拉伯语</Option>
-              <Option value="spanish">西班牙语</Option>
-              <Option value="japanese">日语</Option>
-              <Option value="korean">韩语(朝鲜语)</Option>
-              <Option value="portuguese">葡萄牙语</Option>
-              <Option value="russian">俄语</Option>
+              <Option value="简体中文">简体中文</Option>
+              <Option value="英语">英语</Option>
+              <Option value="德语">德语</Option>
+              <Option value="法语">法语</Option>
+              <Option value="阿拉伯语">阿拉伯语</Option>
+              <Option value="西班牙语">西班牙语</Option>
+              <Option value="日语">日语</Option>
+              <Option value="韩语">韩语(朝鲜语)</Option>
+              <Option value="葡萄牙语">葡萄牙语</Option>
+              <Option value="俄语">俄语</Option>
             </Select>
           </FormItem>
           <FormItem label="电影时长" prop="duration" style="width: 300px; text-align: left">

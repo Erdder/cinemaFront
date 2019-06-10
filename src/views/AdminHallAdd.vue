@@ -29,7 +29,7 @@
             </FormItem>
             <FormItem style="padding-left:50px;text-align: left">
               <Button type="primary" ghost  style="height:30px;width: 55px" @click="addHall">确认</Button>
-              <Button  style="margin-left: 8px">重置</Button>
+              <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
             </FormItem>
           </Form>
         </Card>
@@ -112,6 +112,10 @@
         }
         return retSize
       },
+      handleReset(name) {
+        this.$refs[name].resetFields();
+      },
+
       addHall: function() {
         //前端要给后端的输入
         var addHallList = {

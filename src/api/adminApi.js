@@ -81,7 +81,7 @@ export default {
   },
   DeleteMovie(params) {
     request({
-      url:'/AdminMovieManage',
+      url:'/DeleteMovie',
       method:'Get',
       params: params
     }.then(success))
@@ -116,7 +116,7 @@ export default {
   },
   DeleteSchedule(data,success) {
     request({
-      url:'/AdminMovieSchedule',
+      url:'/DeleteMovie',
       method:'post',
       data: data
     }.then(success))

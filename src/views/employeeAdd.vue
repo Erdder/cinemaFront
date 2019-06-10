@@ -11,10 +11,8 @@
             </FormItem>
             <FormItem label="员工职位" prop="type" style="width: 300px">
               <Select v-model="formValidate.type" placeholder="">
-                <Option value="ticketSeller">售票员</Option>
-                <Option value="cleaner">清洁工</Option>
-                <Option value="large">大厅</Option>
-                <Option value="huge">超大厅</Option>
+                <Option value="售票员">售票员</Option>
+                <Option value="清洁工">清洁工</Option>
               </Select>
             </FormItem>
             <FormItem label="员工工号" prop="number" style="width: 300px">
@@ -22,8 +20,8 @@
             </FormItem>
 
             <FormItem style="padding-left:50px;text-align: left">
-              <Button type="primary" ghost  style="height:30px;width: 55px" @click="addHall">确认</Button>
-              <Button  style="margin-left: 8px">重置</Button>
+              <Button type="primary" ghost  style="height:30px;width: 55px" @click="addEmployee">确认</Button>
+              <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
             </FormItem>
           </Form>
         </Card>
@@ -99,14 +97,13 @@
           retSize = 1;
         }else if(type === '清洁工' ){
           retSize = 2;
-        }else if ( type === '大厅'){
-          retSize = 12;
-        }else{
-          retSize = 13;
         }
         return retSize
       },
-      addHall: function() {
+      handleReset(name) {
+        this.$refs[name].resetFields();
+      },
+      addEmployee: function() {
         //前端要给后端的输入
         var addEmployee = {
           id: 1,
@@ -115,7 +112,7 @@
           number: this.formValidate.number
         }
         console.log(addEmployee)
-        axios.post('http://172.28.193.125:8080/InsertHall',addEmployee)
+        axios.post('',addEmployee)
           .then(function (response) {
             console.log(response);
           })
