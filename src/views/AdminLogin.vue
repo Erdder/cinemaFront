@@ -66,7 +66,7 @@ import admin from "../api/adminApi"
           password: psd,
         };
 
-        this.$api.admin.VerifyAdmin(data)
+      admin.VerifyAdmin(data)
           .then( res => {
             _this.$router.push({ path: '/AdminMovieList'});
         })

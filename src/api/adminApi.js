@@ -1,6 +1,7 @@
 import axios from '../request/http';
 import qs from 'qs';
 
+
 const admin = {
 
   /*
@@ -152,3 +153,5 @@ const admin = {
       })
   },
 };
+
+export default admin;

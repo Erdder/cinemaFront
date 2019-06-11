@@ -68,15 +68,16 @@
               </template>
               <MenuItem name="4-1">会员卡</MenuItem>
               <MenuItem name="4-2">优惠活动</MenuItem>
-              <MenuItem name="4-3">赠送优惠券</MenuItem>
+              <MenuItem name="4-3">退票管理</MenuItem>
+              <MenuItem name="4-4">赠送优惠券</MenuItem>
             </Submenu>
             <Submenu name="5">
               <template slot="title">
                 <Icon type="ios-bookmarks"></Icon>
                 数据管理
               </template>
-              <MenuItem name="5-1">想看详情</MenuItem>
-              <MenuItem name="5-2">优惠活动</MenuItem>
+              <MenuItem name="5-1">查看数据</MenuItem>
+              <MenuItem name="5-2">先空着</MenuItem>
             </Submenu>
             <Submenu name="6">
               <template slot="title">
@@ -169,6 +170,9 @@
             this.$router.push({ path: '/AdminCoupon' });
             break;
           case '4-3':
+            this.$router.push({ path: '/AdminCoupon' });
+            break;
+          case '4-4':
             this.$router.push({ path: '/AdminPresentCoupon' });
             break;
           case '5-1':
