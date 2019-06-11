@@ -113,8 +113,8 @@
           startTime: this.timeValue[0],
           endTime: this.timeValue[1],
           fare: this.ticketValue,
-        }
-        console.log(addScheduleList),
+        };
+        console.log(addScheduleList);
         axios.post('http://172.28.193.125:8080/InsertSchedule',addScheduleList)
           .then(function (response) {
             console.log(response);

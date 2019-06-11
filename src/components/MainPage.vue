@@ -68,6 +68,7 @@
               </template>
               <MenuItem name="4-1">会员卡</MenuItem>
               <MenuItem name="4-2">优惠活动</MenuItem>
+              <MenuItem name="4-3">赠送优惠券</MenuItem>
             </Submenu>
             <Submenu name="5">
               <template slot="title">
@@ -166,6 +167,9 @@
             break;
           case '4-2':
             this.$router.push({ path: '/AdminCoupon' });
+            break;
+          case '4-3':
+            this.$router.push({ path: '/AdminPresentCoupon' });
             break;
           case '5-1':
             this.$router.push({ path: '/AdminDataList' });

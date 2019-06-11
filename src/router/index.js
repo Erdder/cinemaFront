@@ -84,6 +84,11 @@ export default new Router({
           name: 'employeeList',
           component: () => import('../views/employeeList.vue')
         },
+        {
+          path: '/AdminPresentCoupon',
+          name: 'AdminPresentCoupon',
+          component: () => import('../views/AdminPresentCoupon.vue')
+        },
 
       ]
     },

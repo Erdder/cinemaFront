@@ -5,8 +5,8 @@
     <div class="like" :id="id" style="width:600px;height:400px" ref="chartLike"></div>
   </Card>
   <Card style="margin-bottom: 20px">
-    <h3>今日排片率</h3>
-    <div style="width:600px;height:400px" ref="schedule-rate-container"></div>
+    <h3>最受欢迎电影</h3>
+    <div class="popular"  style="width:600px;height:400px" ref="chartPopular"></div>
   </Card>
   </div>
 </template>
@@ -49,6 +49,7 @@
     },
     mounted() {
       this.initChartLike();
+      this.initChartPopular();
     },
     beforeDestroy() {
       if (!this.chart) {
@@ -91,9 +92,44 @@
             barwidth: '20%',
             data: [10, 100, 1000]
           }]
-
         })
       },
+      initChartPopular() {
+        this.chart = echarts.init(this.$refs.chartLike);
+        //把配置和数据放这里
+        this.chart.setOption({
+          color: ['#3398DB'],
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {     //坐标轴指示器，坐标轴触发有效
+              type: 'shadow'
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: [{
+            type: 'category',
+            data: this.movieName,
+            axisTick: {
+              alignWithLabel: true
+            }
+          }],
+          yAxis: [{
+            type: 'value'
+          }],
+          series: [{
+            name: '想看人数',
+            type: 'bar',
+            barwidth: '20%',
+            data: [10, 100, 1000]
+          }]
+        })
+      },
+
       getTime() {
         setInterval(() => {
           //new Date() new一个data对象，当前日期和时间
