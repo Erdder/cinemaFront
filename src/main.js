@@ -3,14 +3,17 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import api from './api'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 Vue.use(ElementUI);
 Vue.use(iView);
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
+
+Vue.prototype.$api = api; // 将api挂载到vue的原型上复制代码
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -18,4 +21,5 @@ new Vue({
   components: {App},
   template: '<App/>',
   render: h => h(App),
-})
+
+});

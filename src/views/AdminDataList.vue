@@ -1,13 +1,22 @@
 <template>
-  <div>
+  <div style="width:1000px">
   <Card style="margin-bottom: 20px">
     <h3>所有电影想看列表</h3>
     <div class="like" :id="id" style="width:600px;height:400px" ref="chartLike"></div>
   </Card>
   <Card style="margin-bottom: 20px">
-    <h3>最受欢迎电影</h3>
     <div class="popular"  style="width:600px;height:400px" ref="chartPopular"></div>
   </Card>
+    <Card style="margin-bottom: 20px">
+      <div class="custom"  style="width:600px;height:400px" ref="chartCustom"></div>
+    </Card>
+
+    <Card style="margin-bottom: 20px">
+      <div class="box-office"  style="width:600px;height:400px" ref="chartBox"></div>
+    </Card>
+    <Card style="margin-bottom: 20px">
+      <div class="attendance"  style="width:600px;height:400px" ref="chartAttendance"></div>
+    </Card>
   </div>
 </template>
 
@@ -39,6 +48,8 @@
         movieName: ['小偷家族', '大侦探默尔摩斯', '夏目友人帐'],
         chart: null,
         currentTime: '',
+        popularMovieName: ['复仇者联盟', '小黄人', '鬼屋欢乐颂', '惊魂一夜', '悲伤', '快乐', '你好漂亮', '黑凤凰'],
+        MovieBox: [],
 
         //前端要给后端的参数
         params: [{
@@ -50,6 +61,9 @@
     mounted() {
       this.initChartLike();
       this.initChartPopular();
+      this.initChartCustom();
+      this.initChartAttendance();
+      this.initChartBox();
     },
     beforeDestroy() {
       if (!this.chart) {
@@ -63,7 +77,7 @@
         this.chart = echarts.init(this.$refs.chartLike);
         //把配置和数据放这里
         this.chart.setOption({
-          color: ['#3398DB'],
+         // color: ['#3398DB'],
           tooltip: {
             trigger: 'axis',
             axisPointer: {     //坐标轴指示器，坐标轴触发有效
@@ -95,50 +109,204 @@
         })
       },
       initChartPopular() {
-        this.chart = echarts.init(this.$refs.chartLike);
+        this.chart = echarts.init(this.$refs.chartPopular);
         //把配置和数据放这里
         this.chart.setOption({
+          title: {
+            text: '最受欢迎电影',
+            subtext: '截止到当前时间的前八名',
+            x: 'middle',
+            y: 'top'
+          },
           color: ['#3398DB'],
           tooltip: {
             trigger: 'axis',
             axisPointer: {     //坐标轴指示器，坐标轴触发有效
-              type: 'shadow'
+              type: 'line'
             }
           },
           grid: {
             left: '3%',
-            right: '4%',
+            right: '3%',
             bottom: '3%',
             containLabel: true
           },
           xAxis: [{
             type: 'category',
-            data: this.movieName,
+            data: this.popularMovieName,
             axisTick: {
-              alignWithLabel: true
+              show: true,
+            },
+            axisLabel: {
+              interval: 0,
+              rotate: 45,
             }
           }],
           yAxis: [{
             type: 'value'
           }],
           series: [{
-            name: '想看人数',
+            name: '票房统计',
             type: 'bar',
-            barwidth: '20%',
-            data: [10, 100, 1000]
+            barWidth: '50%',
+            data: [1500, 1350, 1100, 1000, 900, 800, 600, 400]
           }]
         })
       },
-
-      getTime() {
-        setInterval(() => {
-          //new Date() new一个data对象，当前日期和时间
-          //toLocaleString() 方法可根据本地时间把 Date 对象转换为字符串，并返回结果。
-          this.params.time = new Date().toLocaleString();
-        }, 1000)
-      }
+      initChartCustom(){
+        this.chart = echarts.init(this.$refs.chartCustom);
+        this.chart.setOption({
+          title: {
+            text: '客单价',
+            subtext: '截止最近一周',
+            x: 'middle',
+            y: 'top'
+          },
+         // color: ['#3398DB'],
+          tooltip: {
+            trigger: 'axis',
+          },
+          toolbox: {
+            show : true,
+            feature : {
+              mark : {show: true},
+              dataView : {show: true, readOnly: false},
+              magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+              restore : {show: true},
+              saveAsImage : {show: true}
+            }
+          },
+          calculable:true,
+          xAxis: [{
+            type: 'category',
+            boundaryGap : false,
+            data:  ['周一','周二','周三','周四','周五','周六','周日'],
+          }],
+          yAxis: [{
+            type: 'value'
+          }],
+          series: [{
+            name: '客单价统计',
+            type: 'line',
+          stack:'总量',
+            data: [1500, 1350, 1100, 1000, 900, 800, 600, 400]
+          }]
+        })
+      },
+      initChartAttendance() {
+        this.chart = echarts.init(this.$refs.chartAttendance);
+        //把配置和数据放这里
+        this.chart.setOption({
+          title: {
+            text: '上座率',
+            subtext: '上映电影上座率比较',
+            x: 'middle',
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter:"{a} <br/>{b} : {c} ({d}% "
+          },
+          legend: {
+            x : 'center',
+            y : 'bottom',
+            data:['rose1','rose2','rose3','rose4','rose5','rose6','rose7','rose8']
+          },
+          toolbox: {
+            show : true,
+            feature : {
+              mark : {show: true},
+              dataView : {show: true, readOnly: false},
+              magicType : {
+                show: true,
+                type: [ 'funnel']
+              },
+              restore : {show: true},
+              saveAsImage : {show: true}
+            }
+          },
+          calculable: true,
+          series : [
+            {
+              name:'面积模式',
+              type:'pie',
+              radius : [30, 110],
+              center : ['75%', 200],
+              roseType : 'area',
+              x: '50%',               // for funnel
+              max: 40,                // for funnel
+              sort : 'ascending',     // for funnel
+              data:[
+                {value:10, name:'rose1'},
+                {value:5, name:'rose2'},
+                {value:15, name:'rose3'},
+                {value:25, name:'rose4'},
+                {value:20, name:'rose5'},
+                {value:35, name:'rose6'},
+                {value:30, name:'rose7'},
+                {value:40, name:'rose8'}
+              ]
+        }]
+      })
     },
-
+      initChartBox() {
+        this.chart = echarts.init(this.$refs.chartBox);
+        //把配置和数据放这里
+        this.chart.setOption({
+          title: {
+            text: '票房 vs 排片（box vs schedule）',
+            subtext: '略',
+            x: 'middle',
+          },
+          tooltip: {
+            trigger: 'axis',
+          },
+          legend: {
+            orient : 'vertical',
+            x : 'right',
+            y : 'bottom',
+            data:['票房（box）','排片（schedule）']
+          },
+          toolbox: {
+            show : true,
+            feature : {
+              mark : {show: true},
+              dataView : {show: true, readOnly: false},
+              restore : {show: true},
+              saveAsImage : {show: true}
+            }
+          },
+          polar : [
+            {
+              indicator : [
+                { text: '销售（sales）', max: 6000},
+                { text: '管理（Administration）', max: 16000},
+                { text: '信息技术（Information Techology）', max: 30000},
+                { text: '客服（Customer Support）', max: 38000},
+                { text: '研发（Development）', max: 52000},
+                { text: '市场（Marketing）', max: 25000}
+              ]
+            }
+          ],
+          calculable: true,
+          series : [
+            {
+              name: '票房 vs 排片（box vs schedule）',
+              type: 'radar',
+              data : [
+                {
+                  value : [4300, 10000, 28000, 35000, 50000, 19000],
+                  name : '票房（box）'
+                },
+                {
+                  value : [5000, 14000, 28000, 31000, 42000, 21000],
+                  name : '排片（schedule）'
+                }
+              ]
+            }
+          ]
+        })
+      },
+    },
     created() {
       this.getTime();
       var _this = this;

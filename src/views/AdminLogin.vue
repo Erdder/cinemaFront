@@ -17,6 +17,9 @@
           </Input>
         </FormItem>
         <FormItem>
+          <a href="http://localhost:8080/#/AdminRegister">还没有账号？点此注册！</a>
+        </FormItem>
+        <FormItem>
           <Button type="primary" @click="handleSubmit('formInline')" onclick="">登录</Button>
         </FormItem>
       </Form>
@@ -26,7 +29,7 @@
 
 <script>
   import axios from "axios"
-  import adminApi from '../api/adminApi'
+import admin from "../api/adminApi"
   export default {
     name: "Login",
     data() {
@@ -48,7 +51,7 @@
     },
     methods: {
       handleSubmit(name) {
-        console.log(this.$refs)
+        console.log(this.$refs);
         this.$refs[name].validate((valid) => {
           if (!valid) {
             this.$Message.error('账号或密码格式错误!');
@@ -63,6 +66,14 @@
           password: psd,
         };
 
+        this.$api.admin.VerifyAdmin(data)
+          .then( res => {
+            _this.$router.push({ path: '/AdminMovieList'});
+        })
+      .catch(err =>{
+          console.log(err);
+        });
+/*
 
           adminApi.VerifyAdmin(data)
             .then(res =>{
@@ -72,8 +83,8 @@
               console.log(error);
             });
 
-/*
-        axios.post('http://172.28.193.125:8080/VerifyAdmin', data)
+        console.log(axios);
+        axios.post('http://172.28.193.117:8080/VerifyAdmin', data)
           .then(function (response) {
             console.log(response);
             //console.log($router);
@@ -82,6 +93,7 @@
           .catch(function (error) {
             // console.log(error);
           });
+
 */
       }
     }

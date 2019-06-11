@@ -1,21 +1,35 @@
-import request from "../utils/request"
-import { get,post } from '../utils/request'
+import axios from '../request/http';
+import qs from 'qs';
 
-export default {
-  VerifyAdmin(params) {
-    return request({
-      url: '/VerifyAdmin',
-      methods: 'Get',
-      params:params
-    })
+const admin = {
+
+  /*
+   // 新闻列表
+    articleList () {
+        return axios.get(`${base.sq}/topics`);
+    },
+    // 新闻详情,演示
+    articleDetail (id, params) {
+        return axios.get(`${base.sq}/topic/${id}`, {
+            params: params
+        });
+    },
+    // post提交
+    login (params) {
+        return axios.post(`${base.sq}/accesstoken`, qs.stringify(params));
+    }
+    // 其他接口…………
+   */
+
+  //管理员登录
+  VerifyAdmin(params){
+    return axios.post('${base.sq}/VerifyAdmin',qs.stringify(params));
   },
 
-  GetHall(success) {
-    request({
-      url:'/AdminHallCheck',
-      method:'get',
-    }.then(success))
+  AdminRegister(params){
+    return axios.post('${base.sq}/adminRegister',qs.stringify(params));
   },
+
   InsetHall(data,success) {
     request({
       url:'/AdminHallAdd',
@@ -137,7 +151,4 @@ export default {
         params:params,
       })
   },
-
-
-}
-
+};

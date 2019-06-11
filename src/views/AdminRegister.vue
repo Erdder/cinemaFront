@@ -1,33 +1,35 @@
 <template>
-  <Card style="width:450px; margin: 80px auto">
-    <p slot="title">
-      <Icon type="md-contact"></Icon>
-      影院员工注册
-    </p>
-    <Form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="80">
-      <FormItem label="用户名" prop="name" >
-        <Input type="text" v-model="formCustom.name" placeholder="请输入员工工号" ></Input>
-      </FormItem>
-      <FormItem label="密码" prop="passwd">
-        <Input type="password" v-model="formCustom.passwd"></Input>
-      </FormItem>
-      <FormItem label="确认密码" prop="passwdCheck">
-        <Input type="password" v-model="formCustom.passwdCheck"></Input>
-      </FormItem>
-      <FormItem>
-        <Button type="primary" @click="handleSubmit('formCustom')" style="margin:10px 0 auto 10px">注册</Button>
-        <Button @click="handleReset('formCustom')" style="margin:10px 50px auto 10px">重置</Button>
-      </FormItem>
-    </Form>
+  <div class="container">
+    <Card style="width:450px; margin: 80px auto">
+      <p slot="title">
+        <Icon type="md-contact"></Icon>
+        影院员工注册
+      </p>
+      <Form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="80">
+        <FormItem label="用户名" prop="name">
+          <Input type="text" v-model="formCustom.name" placeholder="请输入员工工号"></Input>
+        </FormItem>
+        <FormItem label="密码" prop="passwd">
+          <Input type="password" v-model="formCustom.passwd"></Input>
+        </FormItem>
+        <FormItem label="确认密码" prop="passwdCheck">
+          <Input type="password" v-model="formCustom.passwdCheck"></Input>
+        </FormItem>
+        <FormItem>
+          <Button type="primary" @click="handleSubmit('formCustom')" style="margin:10px 0 auto 10px">注册</Button>
+          <Button @click="handleReset('formCustom')" style="margin:10px 50px auto 10px">重置</Button>
+        </FormItem>
+      </Form>
 
-  </Card>
-
+    </Card>
+  </div>
 </template>
 
 <script>
+
   export default {
-    name:"AdminRegister",
-    data () {
+    name: "AdminRegister",
+    data() {
       const validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'))
@@ -62,30 +64,59 @@
         },
         ruleCustom: {
           name: [
-            { validator: validateName, trigger: 'blur' }
+            {validator: validateName, trigger: 'blur'}
           ],
           passwd: [
-            { validator: validatePass, trigger: 'blur' }
+            {validator: validatePass, trigger: 'blur'}
           ],
           passwdCheck: [
-            { validator: validatePassCheck, trigger: 'blur' }
+            {validator: validatePassCheck, trigger: 'blur'}
           ],
         }
       }
     },
     methods: {
-      handleSubmit (name) {
+      handleReset(name) {
+        this.$refs[name].resetFields();
+      },
+
+      handleSubmit(name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
             this.$Message.success('Success!');
           } else {
             this.$Message.error('Fail!');
           }
-        })
-      },
-      handleReset (name) {
-        this.$refs[name].resetFields();
+        });
+        var user = this.formCustom.name;
+        var psd = this.formCustom.passwd;
+        var _this = this;
+        var data = {
+          username: user,
+          password: psd,
+        };
+
+        this.$api.adminApi.AdminRegister(data)
+          .then(res => {
+            _this.$router.push({path: '/AdminMovieList'});
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     }
   }
 </script>
+
+<style scoped>
+  .container {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    background-image: url("../assets/login_background.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+  }
+
+</style>

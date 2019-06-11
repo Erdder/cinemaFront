@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import AdminLogin from '../views/AdminLogin.vue'
 import AdminMain from '../views/AdminMain'
 import AdminRegister from '../views/AdminRegister.vue'
-
+import echarts from "echarts"
 
 Vue.use(Router)
 
