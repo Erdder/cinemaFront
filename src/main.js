@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import api from './api'
+//import store from './store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import iView from 'iview';
@@ -18,6 +19,7 @@ Vue.prototype.$api = api; // 将api挂载到vue的原型上复制代码
 new Vue({
   el: '#app',
   router,
+  //store,
   components: {App},
   template: '<App/>',
   render: h => h(App),

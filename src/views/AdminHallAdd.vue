@@ -72,6 +72,7 @@
 
 <script>
   import axios from "axios"
+  import admin from "../api/adminApi";
   export default {
     name: "AdminHallAdd",
     data() {

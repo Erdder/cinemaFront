@@ -6,9 +6,12 @@
         影院员工注册
       </p>
       <Form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="80">
-        <FormItem label="用户名" prop="name">
-          <Input type="text" v-model="formCustom.name" placeholder="请输入员工工号"></Input>
-        </FormItem>
+        <Tooltip placement="right" content="该工号有效 !">
+          <FormItem label="用户名" prop="name" style="margin-left: 0">
+            <Input type="text" v-model="formCustom.name" placeholder="请输入员工工号"></Input>
+          </FormItem>
+        </Tooltip>
+
         <FormItem label="密码" prop="passwd">
           <Input type="password" v-model="formCustom.passwd"></Input>
         </FormItem>
@@ -26,7 +29,7 @@
 </template>
 
 <script>
-
+  import admin from "../api/adminApi"
   export default {
     name: "AdminRegister",
     data() {
@@ -53,6 +56,8 @@
       const validateName = (rule, value, callback) => {
         if (!value) {
           return callback(new Error('用户名不能为空'));
+        }else{
+          this.checkJobNumber();
         }
       };
 
@@ -79,7 +84,6 @@
       handleReset(name) {
         this.$refs[name].resetFields();
       },
-
       handleSubmit(name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
@@ -88,6 +92,8 @@
             this.$Message.error('Fail!');
           }
         });
+
+        //调用接口发送给后端
         var user = this.formCustom.name;
         var psd = this.formCustom.passwd;
         var _this = this;
@@ -103,9 +109,18 @@
           .catch(err => {
             console.log(err);
           });
+      },
+      checkJobNumber(){
+        admin.checkJobNumber(this.formCustom.name)
+          .then( res => {
+            alert("有效工号！")
+          })
+          .catch(err =>{
+            alert("┗|｀O′|┛ 嗷~~无效工号！")
+          });
+        },
       }
     }
-  }
 </script>
 
 <style scoped>

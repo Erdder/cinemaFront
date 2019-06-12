@@ -78,13 +78,13 @@
 </template>
 
 <script>
-  import axios from "axios"
+  import admin from "../api/adminApi";
 
   export default {
     name: "AdminCoupon",
     created() {
       var _this = this;
-      axios.get('http://172.28.193.125:8080/getMovieList')
+     admin.GetCoupon()
         .then(function (response) {
           _this.movieOption = response;
         })
@@ -167,6 +167,7 @@
           moneyMustHave: 0,
           moneyGet: 0,
           joinMovieList: [],
+          isUniversity:false,
         },
         addCouponVisible: false,
         movieOption: [],
@@ -175,7 +176,7 @@
     methods: {
       addCoupon() {
         var _this = this;
-        axios.get('http://172.28.193.125:8080/insertCoupon', this.addCouponForm)
+        admin.InsertCoupon( this.addCouponForm)
           .then(function (response) {
             _this.$Message.info(response);
           })

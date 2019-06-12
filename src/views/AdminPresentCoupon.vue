@@ -15,16 +15,18 @@
             </Select>
           </FormItem>
         </Form>
+        <div>
           <Table border ref="selection" :columns="columns" :data="dataAudience"></Table>
           <Button @click="handleSelectAll(true)" style="margin: 20px 10px;">设置全选</Button>
           <Button @click="handleSelectAll(false)" style="margin: 20px ">取消全选</Button>
-
+        </div>
       </Content>
     </Layout>
   </div>
 </template>
 
 <script>
+  import admin from "../api/adminApi";
     export default {
       name: "AdminPresentCoupon",
       data() {
@@ -90,7 +92,6 @@
             moneyGet: 0,
             joinMovieList: [],
           },
-
           dataList: {
             number: this.number,
             ticketId: this.data(),//错的

@@ -1,4 +1,4 @@
-import axios from '../request/http';
+import axios from 'axios';
 import qs from 'qs';
 
 
@@ -27,10 +27,54 @@ const admin = {
     return axios.post('${base.sq}/VerifyAdmin',qs.stringify(params));
   },
 
+  //影院员工注册时获取工号
+  checkJobNumber(params){
+    return axios.post('${base.sq}/checkJobNumber',qs.stringify(params));
+  },
+
+  //影院员工注册
   AdminRegister(params){
     return axios.post('${base.sq}/adminRegister',qs.stringify(params));
   },
 
+  //获取会员卡列表
+  GetAdminVipCard(){
+    return axios.get('${base.sq}/GetAdminVipCard');
+  },
+
+  //更新会员卡
+  UpdateAdminVipCard(){
+    return axios.post('${base.sq}/UpdateAdminVipCard',qs.stringify(params));
+  },
+
+  //删除会员卡
+  DeleteAdminVipCard(params){
+    return axios.get('${base.sq}/GetAdminVipCard',params);
+  },
+
+  //新增会员卡
+  InsertAdminVipCard(params){
+    return axios.post('${base.sq}/InsertAdminVipCard',qs.stringify(params));
+  },
+
+
+  //更新退票策略
+  UpdateRefund(){
+    return axios.post('${base.sq}/UpdateRefund',qs.stringify(params));
+  },
+  //获取退票策略列表
+  GetRefund(){
+    return axios.get('${base.sq}/GetRefund');
+  },
+
+  //获取所有优惠券
+  GetCoupon(){
+    return axios.post('${base.sq}/GetCoupon')
+  },
+  //新增优惠策略
+  InsertCoupon(params){
+    return axios.post('${base.sq}/InsertCoupon',qs.stringify(params));
+  },
   InsetHall(data,success) {
     request({
       url:'/AdminHallAdd',

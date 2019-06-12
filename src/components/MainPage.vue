@@ -6,32 +6,9 @@
           <div class="layout-logo">
             <Avatar icon="ios-person" size="large" style="margin-bottom: 50px"/>
           </div>
-          <div class="layout-nav">
-            <MenuItem name="1">
-              <Icon type="ios-navigate"></Icon>
-              电影管理
-            </MenuItem>
-            <MenuItem name="2">
-              <Icon type="ios-keypad"></Icon>
-              排片管理
-            </MenuItem>
-            <MenuItem name="3">
-            <Icon type="ios-analytics"></Icon>
-            影厅管理
-          </MenuItem>
-            <MenuItem name="4">
-              <Icon type="ios-paper"></Icon>
-              活动管理
-            </MenuItem>
-              <MenuItem name="5">
-                <Icon type="ios-bookmarks"></Icon>
-                数据管理
-              </MenuItem>
-            <MenuItem name="6">
-              <Icon type="ios-body"></Icon>
-              员工管理
-            </MenuItem>
-          </div>
+        <div class="title-logo" style="text-align: center">
+          <h1 >破产影院管理系统</h1>
+        </div>
         </Menu>
       </Header>
       <Layout :style="{padding: '0 50px'}">
@@ -118,10 +95,12 @@
     left: 100px;
   }
 
-  .layout-nav {
-    width: 750px;
-    margin: 0 auto;
-    margin-right: 20px;
+  .title-logo {
+   color: cadetblue;
+ //font-style:italic;
+    font-family: Cursive,serif  ;
+    font-size: 14pt;
+    letter-spacing: 5px;
   }
 
 
@@ -170,7 +149,7 @@
             this.$router.push({ path: '/AdminCoupon' });
             break;
           case '4-3':
-            this.$router.push({ path: '/AdminCoupon' });
+            this.$router.push({ path: '/AdminRefund' });
             break;
           case '4-4':
             this.$router.push({ path: '/AdminPresentCoupon' });

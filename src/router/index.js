@@ -89,6 +89,11 @@ export default new Router({
           name: 'AdminPresentCoupon',
           component: () => import('../views/AdminPresentCoupon.vue')
         },
+        {
+          path: '/AdminRefund',
+          name: 'AdminRefund',
+          component: () => import('../views/AdminRefund.vue')
+        },
 
       ]
     },

@@ -8,6 +8,7 @@ import router from '../router';
 import { Toast } from 'vant';
 
 
+
 /*
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
