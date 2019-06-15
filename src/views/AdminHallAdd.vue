@@ -4,7 +4,7 @@
       <Content :style="{padding: '24px ', minHeight: '280px', background: '#fff'}">
         <h1 style="text-align: left">新增影厅</h1>
         <Card style="width:400px;height:300px">
-          <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="70"
+          <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="90"
                 style="width: 500px">
             <FormItem label="影厅名称" prop="name" style="width: 300px">
               <Input v-model="formValidate.name" placeholder=""></Input>
@@ -28,7 +28,7 @@
               </Select>
             </FormItem>
             <FormItem style="padding-left:50px;text-align: left">
-              <Button type="primary" ghost  style="height:30px;width: 55px" @click="addHall">确认</Button>
+              <Button type="primary" ghost style="height:30px;width: 55px" @click="addHall">确认</Button>
               <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
             </FormItem>
           </Form>
@@ -71,8 +71,8 @@
 </style>
 
 <script>
-  import axios from "axios"
   import admin from "../api/adminApi";
+
   export default {
     name: "AdminHallAdd",
     data() {
@@ -100,15 +100,15 @@
     },
 
     methods: {
-      judgeSize(type){
+      judgeSize(type) {
         var retSize = 0;
-        if( type === '小厅' ){
+        if (type === '小厅') {
           retSize = 5;
-        }else if(type === '普通厅' ){
+        } else if (type === '普通厅') {
           retSize = 9;
-        }else if ( type === '大厅'){
+        } else if (type === '大厅') {
           retSize = 12;
-        }else{
+        } else {
           retSize = 13;
         }
         return retSize
@@ -117,24 +117,34 @@
         this.$refs[name].resetFields();
       },
 
-      addHall: function() {
+      addHall: function () {
+        var _this = this;
+        var seatList = [];
+        var rows = this.judgeSize(this.formValidate.type);
+        var columns = this.judgeSize(this.formValidate.type);
+        for(var i=0;i<rows;i++){
+          for(var j=0;j<columns;j++){
+            seatList.push({
+              row:i,
+              column:j,
+              seatAvailable:true
+            })
+          }
+        }
         //前端要给后端的输入
         var addHallList = {
           id: 1,
-            name: this.formValidate.name,
-            seatList: [{
-            row: this.judgeSize(this.formValidate.type),
-            column: this.judgeSize(this.formValidate.type),
-          }],
-            feature: this.formValidate.feature
+          name: this.formValidate.name,
+          seatList: seatList,
+          feature: this.formValidate.feature
         }
         console.log(addHallList)
-        axios.post('http://172.28.193.125:8080/InsertHall',addHallList)
+        admin.InsertHall(addHallList)
           .then(function (response) {
-            console.log(response);
+            _this.$Message.success("新增影厅成功！");
           })
           .catch(function (error) {
-            console.log(error);
+            _this.$Message.error("新增失败，请重试")
           })
       }
     },
