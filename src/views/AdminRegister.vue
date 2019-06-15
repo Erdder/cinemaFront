@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <Card style="width:450px; margin: 80px auto;  background: rgba(255,255,255,0.5)">
+    <Card style="width:450px; margin: 80px auto">
       <p slot="title">
         <Icon type="md-contact"></Icon>
         影院员工注册
       </p>
       <Form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="80">
-        <Tooltip placement="right" content="工号需有效 !">
+        <Tooltip placement="right" content="该工号有效 !">
           <FormItem label="员工工号" prop="name" style="margin-left: 0">
             <Input type="text" v-model="formCustom.jobNumber" placeholder="请输入员工工号"></Input>
           </FormItem>
@@ -30,6 +30,7 @@
 
 <script>
   import admin from "../api/adminApi"
+
   export default {
     name: "AdminRegister",
     data() {
@@ -56,8 +57,6 @@
       const validateName = (rule, value, callback) => {
         if (!value) {
           return callback(new Error('用户名不能为空'));
-        }else{
-          this.checkJobNumber();
         }
       };
 
@@ -68,7 +67,7 @@
           passwdCheck: '',
         },
         ruleCustom: {
-          name: [
+          jobNumber: [
             {validator: validateName, trigger: 'blur'}
           ],
           passwd: [
@@ -85,44 +84,41 @@
         this.$refs[name].resetFields();
       },
       handleSubmit(name) {
-       /* this.$refs[name].validate((valid) => {
-          if (valid) {
-            this.$Message.success('Success!');
-          } else {
+        this.$refs[name].validate((valid) => {
+          if (!valid) {
             this.$Message.error('Fail!');
           }
-        });*/
-
-        //调用接口发送给后端
+        });
+        this.checkJobNumber();
+      },
+      checkJobNumber() {
+        var _this = this;
+        admin.CheckJobNumber(_this.formCustom.jobNumber)
+          .then(res => {
+            _this.register();
+          })
+          .catch(err => {
+            _this.$Message.error("注册失败，请重试！");
+          });
+      },
+      register(){
+        var _this = this;
         var jobnumber = this.formCustom.jobNumber;
         var psd = this.formCustom.passwd;
-        var _this = this;
         var data = {
-          jobNumber:jobnumber,
+          jobNumber: jobnumber,
           password: psd,
         };
-
-        //注册接口
-       admin.AdminRegister(data)
+        admin.RegisterEmployee(data)
           .then(res => {
             _this.$router.push({path: '/AdminMovieList'});
           })
           .catch(err => {
             console.log(err);
           });
-      },
-
-      checkJobNumber(){
-        admin.checkJobNumber(this.formCustom.name)
-          .then( res => {
-            alert("有效工号！")
-          })
-          .catch(err =>{
-            alert("┗|｀O′|┛ 嗷~~无效工号！")
-          });
-      },
       }
     }
+  }
 </script>
 
 <style scoped>
