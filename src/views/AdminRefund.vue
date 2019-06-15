@@ -1,11 +1,14 @@
 <template>
 <Card>
-  <h3 style="text-align: left">退票策略</h3>
-  <Button type="default" @click="handleAdd">
-    <Icon type="ios-add"></Icon>
-    新增方案
-  </Button>
-  <Table :columns="columnInfo" :data="exampleList" style="margin-left: 20px;margin-top: 10px">
+  <div>
+    <h2 style="text-align: left;float: left">退票策略</h2>
+    <Button style="margin-left: 600px; float: left" icon="ios-add" type="default"
+            @click="handleAdd">新增方案
+    </Button>
+  </div>
+
+  <div style="margin-top: 50px">
+  <Table :columns="columnInfo" :data="exampleList" style="width: 900px;margin-top: 10px">
     <template slot-scope="{ row, index }" slot="timeLeft">
       <Input type="text" v-model="editTime" v-if="editIndex === index"/>
       <span v-else>{{ row.timeLeft }}</span>
@@ -25,6 +28,8 @@
       </div>
     </template>
   </Table>
+</div>
+
   <Button type="primary" ghost style="margin-right:100px;margin-top: 20px" @click="confirmSubmit">确认提交</Button>
 </Card>
 </template>

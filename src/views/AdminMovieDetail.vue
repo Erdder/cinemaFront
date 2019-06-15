@@ -15,8 +15,8 @@
     </div>
     <div style="width: 750px; text-align: justify;margin-top: 5px">
       <p><strong>简介：</strong>{{movieDetail.description}}</p>
-      <Button type="primary" @click="editMovie">修改</Button>
-      <Button type="error" @click="deleteMovie">下架</Button>
+      <Button style="margin-top: 40px" type="primary" @click="editMovie">修改</Button>
+      <Button style="margin-top: 40px" type="error" @click="deleteMovie">下架</Button>
       <p><strong>时长：</strong>{{movieDetail.duration}}</p>
       <p><strong>上映时间：</strong>{{movieDetail.startDate}}</p>
       <p><strong>国家/地区：</strong>{{movieDetail.country}}</p>
@@ -419,14 +419,14 @@
           this.chart = echarts.init(this.$refs.movieLike);
           var data = {
             movieId:this.movieDetail.id,
-          }
+          };
           axios.post('http://172.28.193.125:8080/GetMovieLikeDetail',data)
             .then(function (response) {
               console.log(response);
             })
             .catch(function (error) {
               console.log(error);
-            })
+            });
           var option = {
             title : {
               text: '想看人数变化统计',

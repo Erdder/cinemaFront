@@ -8,16 +8,16 @@
       <Form ref="formInline" :model="formInline" :rules="ruleInline">
         <FormItem prop="user">
           <Input type="text" v-model="formInline.user" size="large" placeholder="Username">
-            <Icon type="ios-person-outline" slot="prepend"></Icon>
+          <Icon type="ios-person-outline" slot="prepend"></Icon>
           </Input>
         </FormItem>
         <FormItem prop="password">
           <Input type="password" v-model="formInline.password" size="large" placeholder="Password">
-            <Icon type="ios-lock-outline" slot="prepend"></Icon>
+          <Icon type="ios-lock-outline" slot="prepend"></Icon>
           </Input>
         </FormItem>
         <FormItem>
-          <a href="http://localhost:8080/#/AdminRegister">还没有账号？点此注册！</a>
+          <Button @click="toRegister" type="text">还没有账号？点此注册！</Button>
         </FormItem>
         <FormItem>
           <Button type="primary" @click="handleSubmit('formInline')" onclick="">登录</Button>
@@ -28,8 +28,8 @@
 </template>
 
 <script>
-  import axios from "axios"
-import admin from "../api/adminApi"
+  import admin from "../api/adminApi"
+
   export default {
     name: "Login",
     data() {
@@ -51,13 +51,11 @@ import admin from "../api/adminApi"
     },
     methods: {
       handleSubmit(name) {
-        console.log(this.$refs);
         this.$refs[name].validate((valid) => {
           if (!valid) {
             this.$Message.error('账号或密码格式错误!');
           }
         });
-
         var user = this.formInline.user;
         var psd = this.formInline.password;
         var _this = this;
@@ -65,37 +63,17 @@ import admin from "../api/adminApi"
           username: user,
           password: psd,
         };
-
         console.log(data);
-      admin.VerifyAdmin(data)
-          .then( res => {
-            _this.$router.push({ path: '/AdminMovieList'});
-        })
-      .catch(err =>{
-          console.log(err);
-        });
-/*
-
-          adminApi.VerifyAdmin(data)
-            .then(res =>{
-            _this.$router.push({ path: '/AdminMovieList'});
+        admin.VerifyAdmin(data)
+          .then(res => {
+            _this.$router.push({path: '/AdminMovieList'});
           })
-            .catch(err =>{
-              console.log(error);
-            });
-
-        console.log(axios);
-        axios.post('http://172.28.193.117:8080/VerifyAdmin', data)
-          .then(function (response) {
-            console.log(response);
-            //console.log($router);
-            _this.$router.push({ path: '/AdminMovieList'});
-          })
-          .catch(function (error) {
-            // console.log(error);
+          .catch(err => {
+            console.log(err);
           });
-
-*/
+      },
+      toRegister(){
+        this.$router.push({path:'/AdminRegister'});
       }
     }
   }

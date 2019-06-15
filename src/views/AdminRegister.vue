@@ -1,14 +1,14 @@
 <template>
   <div class="container">
-    <Card style="width:450px; margin: 80px auto">
+    <Card style="width:450px; margin: 80px auto;  background: rgba(255,255,255,0.5)">
       <p slot="title">
         <Icon type="md-contact"></Icon>
         影院员工注册
       </p>
       <Form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="80">
-        <Tooltip placement="right" content="该工号有效 !">
-          <FormItem label="用户名" prop="name" style="margin-left: 0">
-            <Input type="text" v-model="formCustom.name" placeholder="请输入员工工号"></Input>
+        <Tooltip placement="right" content="工号需有效 !">
+          <FormItem label="员工工号" prop="name" style="margin-left: 0">
+            <Input type="text" v-model="formCustom.jobNumber" placeholder="请输入员工工号"></Input>
           </FormItem>
         </Tooltip>
 
@@ -63,7 +63,7 @@
 
       return {
         formCustom: {
-          name: '',
+          jobNumber: '',
           passwd: '',
           passwdCheck: '',
         },
@@ -85,24 +85,25 @@
         this.$refs[name].resetFields();
       },
       handleSubmit(name) {
-        this.$refs[name].validate((valid) => {
+       /* this.$refs[name].validate((valid) => {
           if (valid) {
             this.$Message.success('Success!');
           } else {
             this.$Message.error('Fail!');
           }
-        });
+        });*/
 
         //调用接口发送给后端
-        var user = this.formCustom.name;
+        var jobnumber = this.formCustom.jobNumber;
         var psd = this.formCustom.passwd;
         var _this = this;
         var data = {
-          username: user,
+          jobNumber:jobnumber,
           password: psd,
         };
 
-        this.$api.adminApi.AdminRegister(data)
+        //注册接口
+       admin.AdminRegister(data)
           .then(res => {
             _this.$router.push({path: '/AdminMovieList'});
           })
@@ -110,6 +111,7 @@
             console.log(err);
           });
       },
+
       checkJobNumber(){
         admin.checkJobNumber(this.formCustom.name)
           .then( res => {
@@ -118,7 +120,7 @@
           .catch(err =>{
             alert("┗|｀O′|┛ 嗷~~无效工号！")
           });
-        },
+      },
       }
     }
 </script>

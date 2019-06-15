@@ -32,7 +32,7 @@
     </FormItem>
     <div class="card" style="margin-top: 20px">
       <div class="schedule-date-container">
-        <div class="schedule-date" v-for="item in hallNameList" :value="item.value" :key="item.value">2019/04/01</div>
+        <div class="schedule-date" v-for="item in dateList" :value="item.value" :key="item.value">{{ item.label }}</div>
         <Option v-for="item in hallNameList" :value="item.value" :key="item.value">{{ item.label }}</Option>
       </div>
       <div class="schedule-container">
@@ -65,7 +65,22 @@
           time: [],
         },
 
+        dateList:[
+          {
+            value:'',
+            label:'',
+          }
+        ],
+
         //前端给后端排片搜索条件
+        searchCondition:[
+          {
+            startDate: 2019,
+            endDate: 2020,
+            hallId:1,
+            movieId:112,
+          }
+        ],
 
 
         //后端要首先给前端影厅和电影名列表
@@ -81,6 +96,8 @@
             label: '',
           }
         ],
+
+
 
         //给完搜索条件后，后端给前端的数据
         retList: [
@@ -141,7 +158,7 @@
             hallId: this.formItem.selectHall,
             movieId: this.formItem.selectMovie,
           },
-        ]
+        ];
         var _this = this;
         axios.post('http://172.28.202.212:8080/GetScheduleList', dataToPost)
           .then(function (response) {

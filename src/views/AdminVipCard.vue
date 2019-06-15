@@ -1,39 +1,43 @@
 <template>
   <Card >
-    <h3 style="text-align: left">会员卡信息</h3>
-      <Button type="default"  @click="handleAdd">
-        <Icon type="ios-add" ></Icon>
-        新增方案
+    <div>
+      <h2 style="text-align: left;float: left">会员卡信息</h2>
+      <Button style="margin-left: 600px; float: left" icon="ios-add" type="default"
+              @click="handleAdd">新增方案
       </Button>
-    <Table border :columns="columns" :data="baseInfo" style="width: 900px;margin-top: 10px">
-      <template slot-scope="{ row, index }" slot="amount">
-        <Input type="text" v-model="editAmount" v-if="editIndex === index" />
-        <span v-else>{{ row.chargeMoney }}</span>
-      </template>
-      <template slot-scope="{ row, index }" slot="plan">
-        <Input type="text" v-model="editPlan" v-if="editIndex === index" />
-        <span v-else>{{ row.bonus }}</span>
-      </template>
-      <template slot-scope="{ row, index }" slot="discount">
-      <Input type="text" v-model="editDiscount" v-if="editIndex === index" />
-      <span v-else>{{ row.discount }}</span>
-    </template>
-      <template slot-scope="{ row, index }" slot="type">
-        <Input type="text" v-model="editType" v-if="editIndex === index" />
-        <span v-else>{{ this.judgeType(row.type) }}</span>
-      </template>
+    </div>
+   <div style="margin-top: 50px">
+     <Table border :columns="columns" :data="baseInfo" style="width: 900px;margin-top: 10px">
+     <template slot-scope="{ row, index }" slot="chargeMoney">
+       <Input type="text" v-model="editAmount" v-if="editIndex === index" />
+       <span v-else>{{ row.chargeMoney }}</span>
+     </template>
+     <template slot-scope="{ row, index }" slot="bonus">
+       <Input type="text" v-model="editBonus" v-if="editIndex === index" />
+       <span v-else>{{ row.bonus }}</span>
+     </template>
+     <template slot-scope="{ row, index }" slot="discount">
+       <Input type="text" v-model="editDiscount" v-if="editIndex === index" />
+       <span v-else>{{ row.discount }}</span>
+     </template>
+     <template slot-scope="{ row, index }" slot="type">
+       <Input type="text" v-model="editType" v-if="editIndex === index" />
+       <span v-else>{{ this.judgeType(row.type) }}</span>
+     </template>
 
-      <template slot-scope="{ row, index }" slot="action">
-        <div v-if="editIndex === index">
-          <Button @click="handleSave(index)">保存</Button>
-          <Button @click="editIndex = -1">取消</Button>
-          <Button @click="remove(index)">删除</Button>
-        </div>
-        <div v-else>
-          <Button @click="handleEdit(row, index)">编辑</Button>
-        </div>
-      </template>
-    </Table>
+     <template slot-scope="{ row, index }" slot="action">
+       <div v-if="editIndex === index">
+         <Button @click="handleSave(index)">保存</Button>
+         <Button @click="editIndex = -1">取消</Button>
+         <Button @click="remove(index)">删除</Button>
+       </div>
+       <div v-else>
+         <Button @click="handleEdit(row, index)">编辑</Button>
+       </div>
+     </template>
+   </Table>
+   </div>
+
     <Button type="primary" ghost style="margin-right:200px;margin-top: 20px" @click="confirmSubmit">确认提交</Button>
 
   </Card>
@@ -50,12 +54,12 @@
             columns: [
               {
                 title: '充值金额',
-                slot: 'amount',
+                slot: 'chargeMoney',
                 width: 100,
               },
               {
                 title: '满赠金额',
-                slot: 'plan',
+                slot: 'bonus',
                 width:150
               },
               {
@@ -74,7 +78,7 @@
             ],
             editIndex: -1,            //当前聚焦的输入框的行数
             editName: '',
-            editPlan: '',
+            editBonus: '',
 
             //这是包含id的所有信息（前后端接口数据
             baseInfo:[
@@ -113,6 +117,7 @@
       created(){
         this.askForVipCard();
       },
+
       methods:{
         //加载页面时得到已有的数据
         askForVipCard(){
@@ -126,14 +131,14 @@
             })
         },
         handleEdit (row, index) {
-          this.editAmount = row.amount;
-          this.editPlan = row.plan;
+          this.editAmount = row.chargeMoney;
+          this.editBonus = row.bonus;
           this.editIndex = index;
           this.editDiscount = row.discount;
         },
         handleSave (index) {
-          this.baseInfo[index].amount = this.editAmount;
-          this.baseInfo[index].plan = this.editPlan;
+          this.baseInfo[index].chargeMoney = this.editAmount;
+          this.baseInfo[index].bonus = this.editBonus;
           this.baseInfo[index].discount = this.editDiscount;
           this.editIndex = -1;
         },

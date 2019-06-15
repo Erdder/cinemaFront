@@ -2,18 +2,18 @@
   <div class="layout">
     <Layout :style="{padding: '0 20px'}">
       <Content :style="{padding: '24px ', minHeight: '280px', background: '#fff'}">
-        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="70"
-                  style="width: 500px">
-          <FormItem label="电影名称" prop="name" style="width: 300px">
+        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="90"
+              style="text-align: left;" inline>
+          <FormItem label="电影名称" prop="name" style="width:400px">
             <Input v-model="formValidate.name"></Input>
           </FormItem>
-          <FormItem label="国家/地区" prop="country" style="width: 250px">
-            <Select v-model="formValidate.country" style="width: 230px">
+          <FormItem label="国家/地区" prop="country" style="width: 300px">
+            <Select v-model="formValidate.country">
               <Option v-for="country in countryList" :value="country.label" :key="country.label">{{ country.label }}
               </Option>
             </Select>
           </FormItem>
-          <FormItem label="电影语言" prop="language" style="width: 300px">
+          <FormItem label="电影语言" prop="language" style="width: 400px">
             <Select v-model="language">
               <Option value="简体中文">简体中文</Option>
               <Option value="英语">英语</Option>
@@ -27,17 +27,17 @@
               <Option value="俄语">俄语</Option>
             </Select>
           </FormItem>
-          <FormItem label="电影时长" prop="duration" style="width: 300px; text-align: left">
+          <FormItem label="电影时长" prop="duration" style=" text-align: left; width: 300px">
             <Input type="number" v-model="formValidate.duration" placeholder="请输入数字">
-              <span slot="append">分钟</span>
+            <span slot="append">分钟</span>
             </Input>
           </FormItem>
-          <FormItem label="上映时间" style="width: 530px">
+          <FormItem label="上映时间" style="width: 400px">
             <Row>
-              <Col span="5">
-                <FormItem prop="date">
-                  <DatePicker type="date" placeholder="选择日期" v-model="formValidate.date"></DatePicker>
-                </FormItem>
+              <Col span="18">
+              <FormItem prop="date">
+                <DatePicker type="date" placeholder="选择日期" v-model="formValidate.date"></DatePicker>
+              </FormItem>
               </Col>
             </Row>
           </FormItem>
@@ -45,7 +45,7 @@
             <Input v-model="formValidate.nameOfDir" placeholder="请输入导演名字"
             ></Input>
           </FormItem>
-          <Form ref="addActors" :model="addActors" :label-width="70" style="width: 300px">
+          <Form ref="addActors" :model="addActors" :label-width="90" style="width: 400px" >
             <FormItem
               v-for="(item, index) in addActors.items"
               v-if="item.status"
@@ -55,41 +55,41 @@
               :rules="{required: true, message:'不能为空', trigger: 'blur'}">
               <Row>
                 <Col span="18">
-                  <Input type="text" v-model="item.valueActor" placeholder="请输入演员名字"></Input>
+                <Input type="text" v-model="item.valueActor" placeholder="请输入演员名字"></Input>
                 </Col>
                 <Col span="4" offset="1">
-                  <Button @click="handleRemove(index)">删除</Button>
+                <Button @click="handleRemove(index)">删除</Button>
                 </Col>
               </Row>
             </FormItem>
             <FormItem label="添加演员">
               <Row>
-                <Col span="12">
-                  <Button type="dashed" long @click="handleAdd" icon="md-add">添加</Button>
+                <Col span="24">
+                <Button type="dashed" long @click="handleAdd" icon="md-add">添加</Button>
                 </Col>
               </Row>
             </FormItem>
           </Form>
-          <FormItem label="上架状态">
+          <FormItem label="上架状态" style="width: 800px;">
             <i-switch v-model="switchStatus" size="large" style="float:left; margin-top:7px">
               <span slot="open">已上</span>
               <span slot="close">未上</span>
             </i-switch>
           </FormItem>
           <FormItem label="上传海报" prop="posterUrl" style="margin:auto 0 auto 0">
-          <Upload
-            ref ="upload"
-            :format="['jpg','jpeg','png']"
-            :max-size="2048"
-            type="drag"
-            action="https://sm.ms/api/upload"
-            style="display: inline-block;width:200px;">
-            <div style="padding: 20px auto 10px 200px">
-              <Icon type="ios-cloud-upload" size="52" style="color: #3399ff" @change="getImg"></Icon>
-              <p>点击或拖拽到此处来上传</p>
-            </div>
-          </Upload>
-        </FormItem>
+            <Upload
+              ref ="upload"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              type="drag"
+              action="https://sm.ms/api/upload"
+              style="display: inline-block;width:200px;">
+              <div style="padding: 20px auto 10px 200px">
+                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff" @change="getImg" ></Icon>
+                <p>点击或拖拽到此处来上传</p>
+              </div>
+            </Upload>
+          </FormItem>
           <FormItem label="影片类型" prop="type">
             <CheckboxGroup v-model="formValidate.type">
               <Checkbox label="喜剧"></Checkbox>
@@ -114,12 +114,12 @@
               <Checkbox label="其他"></Checkbox>
             </CheckboxGroup>
           </FormItem>
-          <FormItem label="剧情介绍" prop="desc">
+          <FormItem label="剧情介绍" prop="desc" style="width: 800px;">
             <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
                    placeholder=""></Input>
           </FormItem>
           <FormItem>
-            <Button type="primary" @click="movieAdd">确认</Button>
+            <Button type="primary" @click="handleSubmit('formValidate')">确认</Button>
             <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
           </FormItem>
         </Form>
@@ -141,8 +141,9 @@
 </style>
 
 <script>
-  import axios from "axios"
+  import admin from '../api/adminApi.js'
   import Upload from "element-ui/packages/upload/src/upload";
+  import axios from 'axios'
 
   export default {
     name: "AdminMovieManage",
@@ -155,29 +156,16 @@
 
         formValidate: {
           name: '',
-          ID: '',
-          switch: true,
           type: [],
           date: '',
-
           desc: '',
           country: '',
-          model1: '',
           duration: 0,
+          nameOfDir:'',
         },
         ruleValidate: {
           name: [
             {required: true, message: '名称不能为空', trigger: 'blur'}
-          ],
-          nameOfDir: [
-            {required: true, message: '名称不能为空', trigger: 'blur'}
-          ],
-          nameOfScri: [
-            {required: true, message: '名称不能为空', trigger: 'blur'}
-          ],
-          ID: [
-            {required: true, message: 'ID不能为空', trigger: 'blur'},
-            {type: 'email', message: '格式不正确', trigger: 'blur'}
           ],
           type: [
             {required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change'},
@@ -401,9 +389,10 @@
     },
     methods: {
       handleSubmit(name) {
+        var _this = this;
         this.$refs[name].validate((valid) => {
           if (valid) {
-            this.$Message.success('Success!');
+            _this.movieAdd()
           } else {
             this.$Message.error('Fail!');
           }
@@ -445,46 +434,40 @@
         }).then(function (res) {
           console.log(res)
           _this.picInfo = res
-      })
+        })
       },
 
       //写接口了！
       movieAdd: function () {
-        var numStatus = 0;
+        var _this = this;
         for (var i = 0; i < this.addActors.items.length; i++) {
-          console.log(this.starring);
-          console.log(this.addActors.items[i].valueActor);
-          this.starring.push(this.addActors.items[i].valueActor)
+          this.starring.push({name:this.addActors.items[i].valueActor})
         }
 
-        //把选择状态的按钮转换为数字
-        function judgeStatus() {
-          if (this.switchStatus === true) {
-            numStatus = 1;
-          }
-        }
-
-        var movieAddList = {
+       var movieAddList = {
           name: this.formValidate.name,
           country: this.formValidate.country,
           language: this.language,
           description: this.formValidate.desc,
           duration: this.formValidate.duration,
-          posterUrl: this.picInfo.url,
+          posterUrl: '',
           director: this.formValidate.nameOfDir,
-          starring: this.starring,
-          type: this.formValidate.type,
+          starringList: this.starring,
+          movieTypeList: [],
           startDate: this.formValidate.date,
-          status: numStatus,
+          status: this.switchStatus?1:0,
         };
+        for(var i=0; i<this.formValidate.type.length;i++){
+          movieAddList.movieTypeList.push({name:this.formValidate.type[i]})
+        }
         console.log(movieAddList);
-        axios.post('http://172.28.193.125:8080/InsertMovie', movieAddList)
-          .then(function (response) {
-            console.log(response);
+        admin.InsertMovie(movieAddList)
+          .then(res => {
+            _this.$Message.success("新增电影成功！");
           })
-          .catch(function (error) {
-            console.log(error);
-          })
+          .catch(err => {
+            _this.$Message.error("新增失败，请重试")
+          });
       },
 
     }

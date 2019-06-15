@@ -98,7 +98,7 @@
   .title-logo {
    color: cadetblue;
  //font-style:italic;
-    font-family: Cursive,serif  ;
+    font-family: "黑体",serif  ;
     font-size: 14pt;
     letter-spacing: 5px;
   }

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import qs from 'qs';
 
+axios.defaults.baseURL = "http://172.25.184.69:8080";
 
 const admin = {
-
   /*
    // 新闻列表
     articleList () {
@@ -22,19 +22,19 @@ const admin = {
     // 其他接口…………
    */
 
-  //管理员登录
+  //管理员登录tested
   VerifyAdmin(params){
-    return axios.post('${base.sq}/VerifyAdmin',qs.stringify(params));
+    return axios.post('/VerifyAdmin',params);
   },
 
   //影院员工注册时获取工号
   checkJobNumber(params){
-    return axios.post('${base.sq}/checkJobNumber',qs.stringify(params));
+    return axios.post('/checkJobNumber',params);
   },
 
   //影院员工注册
   AdminRegister(params){
-    return axios.post('${base.sq}/adminRegister',qs.stringify(params));
+    return axios.post('/InsertEmployee',params);
   },
 
   //获取会员卡列表
@@ -57,6 +57,31 @@ const admin = {
     return axios.post('${base.sq}/InsertAdminVipCard',qs.stringify(params));
   },
 
+//获取排片列表
+  GetScheduleList(params) {
+    return axios.get('/GetAdminVipCard',params);
+  },
+  InsertSchedule(data,success) {
+    request({
+      url:'/AdminMovieSchedule',
+      method:'post',
+      data: data
+    }.then(success))
+  },
+  UpdateSchedule(data,success) {
+    request({
+      url:'/AdminMovieSchedule',
+      method:'post',
+      data: data
+    }.then(success))
+  },
+  DeleteSchedule(data,success) {
+    request({
+      url:'/DeleteMovie',
+      method:'post',
+      data: data
+    }.then(success))
+  },
 
   //更新退票策略
   UpdateRefund(){
@@ -153,33 +178,6 @@ const admin = {
     })
   },
 
-  GetScheduleList(success) {
-    request({
-      url:'/AdminMovieList',
-      method:'get',
-    }.then(success))
-  },
-  InsertSchedule(data,success) {
-    request({
-      url:'/AdminMovieSchedule',
-      method:'post',
-      data: data
-    }.then(success))
-  },
-  UpdateSchedule(data,success) {
-    request({
-      url:'/AdminMovieSchedule',
-      method:'post',
-      data: data
-    }.then(success))
-  },
-  DeleteSchedule(data,success) {
-    request({
-      url:'/DeleteMovie',
-      method:'post',
-      data: data
-    }.then(success))
-  },
   //所有电影
   GetLikeMarkList(params) {
     return request({

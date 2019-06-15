@@ -1,21 +1,23 @@
 <template>
-  <div style="width:1000px">
+  <div >
   <Card style="margin-bottom: 20px">
     <h3>所有电影想看列表</h3>
-    <div class="like" :id="id" style="width:600px;height:400px" ref="chartLike"></div>
+    <div class="like" :id="id" style="width:850px;height:400px" ref="chartLike"></div>
   </Card>
   <Card style="margin-bottom: 20px">
-    <div class="popular"  style="width:600px;height:400px" ref="chartPopular"></div>
+    <div class="popular"  style="width:850px;height:400px" ref="chartPopular"></div>
   </Card>
+
+
     <Card style="margin-bottom: 20px">
-      <div class="custom"  style="width:600px;height:400px" ref="chartCustom"></div>
+      <div class="custom"  style="width:850px;height:400px" ref="chartCustom"></div>
     </Card>
 
     <Card style="margin-bottom: 20px">
-      <div class="box-office"  style="width:600px;height:400px" ref="chartBox"></div>
+      <div class="box-office"  style="width:850px;height:400px" ref="chartBox"></div>
     </Card>
     <Card style="margin-bottom: 20px">
-      <div class="attendance"  style="width:600px;height:400px" ref="chartAttendance"></div>
+      <div class="attendance"  style="width:850px;height:400px" ref="chartAttendance"></div>
     </Card>
   </div>
 </template>
@@ -45,7 +47,7 @@
             status: 1
           },
         ],
-        movieName: ['小偷家族', '大侦探默尔摩斯', '夏目友人帐'],
+        movieName: ['复仇者联盟', '小黄人', '鬼屋欢乐颂', '惊魂一夜', '悲伤', '快乐', '你好漂亮', '黑凤凰'],
         chart: null,
         currentTime: '',
         popularMovieName: ['复仇者联盟', '小黄人', '鬼屋欢乐颂', '惊魂一夜', '悲伤', '快乐', '你好漂亮', '黑凤凰'],
@@ -77,7 +79,7 @@
         this.chart = echarts.init(this.$refs.chartLike);
         //把配置和数据放这里
         this.chart.setOption({
-         // color: ['#3398DB'],
+          color: ['#3398DB'],
           tooltip: {
             trigger: 'axis',
             axisPointer: {     //坐标轴指示器，坐标轴触发有效
@@ -103,8 +105,8 @@
           series: [{
             name: '想看人数',
             type: 'bar',
-            barwidth: '20%',
-            data: [10, 100, 1000]
+            barwidth: '10%',
+            data: [100, 500, 338,578,928,483,1000,365]
           }]
         })
       },
@@ -118,7 +120,7 @@
             x: 'middle',
             y: 'top'
           },
-          color: ['#3398DB'],
+         // color: ['#3398DB'],
           tooltip: {
             trigger: 'axis',
             axisPointer: {     //坐标轴指示器，坐标轴触发有效
@@ -180,7 +182,7 @@
           xAxis: [{
             type: 'category',
             boundaryGap : false,
-            data:  ['周一','周二','周三','周四','周五','周六','周日'],
+            data:  ['6/1','6/2','6/3','6/4','6/5','6/6','6/7','6/8','6/9','6/10'],
           }],
           yAxis: [{
             type: 'value'
@@ -189,7 +191,7 @@
             name: '客单价统计',
             type: 'line',
           stack:'总量',
-            data: [1500, 1350, 1100, 1000, 900, 800, 600, 400]
+            data: [1500, 1350, 1600, 2000, 1923, 1889, 2348, 3473]
           }]
         })
       },
@@ -206,10 +208,11 @@
             trigger: 'item',
             formatter:"{a} <br/>{b} : {c} ({d}% "
           },
+
           legend: {
             x : 'center',
             y : 'bottom',
-            data:['rose1','rose2','rose3','rose4','rose5','rose6','rose7','rose8']
+            data:['复仇者联盟', '小黄人', '鬼屋欢乐颂', '惊魂一夜', '悲伤', '快乐', '你好漂亮', '黑凤凰'],
           },
           toolbox: {
             show : true,
@@ -230,20 +233,20 @@
               name:'面积模式',
               type:'pie',
               radius : [30, 110],
-              center : ['75%', 200],
+              center : ['50%', 200],
               roseType : 'area',
-              x: '50%',               // for funnel
+             // x: '50%',               // for funnel
               max: 40,                // for funnel
               sort : 'ascending',     // for funnel
               data:[
-                {value:10, name:'rose1'},
-                {value:5, name:'rose2'},
-                {value:15, name:'rose3'},
-                {value:25, name:'rose4'},
-                {value:20, name:'rose5'},
-                {value:35, name:'rose6'},
-                {value:30, name:'rose7'},
-                {value:40, name:'rose8'}
+                {value:10, name:'复仇者联盟'},
+                {value:5, name:'小黄人'},
+                {value:15, name:'鬼屋欢乐颂'},
+                {value:25, name:'惊魂一夜'},
+                {value:20, name:'悲伤'},
+                {value:35, name:'快乐'},
+                {value:30, name:'你好漂亮'},
+                {value:40, name:'黑凤凰'}
               ]
         }]
       })
@@ -275,15 +278,16 @@
               saveAsImage : {show: true}
             }
           },
+
           polar : [
             {
               indicator : [
-                { text: '销售（sales）', max: 6000},
-                { text: '管理（Administration）', max: 16000},
-                { text: '信息技术（Information Techology）', max: 30000},
-                { text: '客服（Customer Support）', max: 38000},
-                { text: '研发（Development）', max: 52000},
-                { text: '市场（Marketing）', max: 25000}
+                { text: '复仇者联盟', max: 6000},
+                { text: '小黄人', max: 16000},
+                { text: '鬼屋欢乐颂', max: 30000},
+                { text: '惊魂一夜', max: 38000},
+                { text: '悲伤', max: 52000},
+                { text: '快乐', max: 25000}
               ]
             }
           ],
