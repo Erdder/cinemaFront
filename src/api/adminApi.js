@@ -1,40 +1,28 @@
 import axios from 'axios';
 import qs from 'qs';
 
-axios.defaults.baseURL = "http://172.25.184.69:8080";
+axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL = "http://172.20.10.2:8080";
 
 const admin = {
-  /*
-   // 新闻列表
-    articleList () {
-        return axios.get(`${base.sq}/topics`);
-    },
-    // 新闻详情,演示
-    articleDetail (id, params) {
-        return axios.get(`${base.sq}/topic/${id}`, {
-            params: params
-        });
-    },
-    // post提交
-    login (params) {
-        return axios.post(`${base.sq}/accesstoken`, qs.stringify(params));
-    }
-    // 其他接口…………
-   */
 
   //管理员登录tested
   VerifyAdmin(params){
     return axios.post('/VerifyAdmin',params);
   },
 
-  //影院员工注册时获取工号
-  checkJobNumber(params){
-    return axios.post('/checkJobNumber',params);
+  //影院员工注册时获取工号tested
+  CheckJobNumber(jobNumber){
+    return axios.get('/CheckJobNumber?&jobNumber='+jobNumber);
   },
 
-  //影院员工注册
-  AdminRegister(params){
+  //新增员工tested
+  InsertEmployee(params){
     return axios.post('/InsertEmployee',params);
+  },
+  //注册员工tested
+  RegisterEmployee(params){
+    return axios.post('/RegisterEmployee',params);
   },
 
   //获取会员卡列表
@@ -57,31 +45,6 @@ const admin = {
     return axios.post('${base.sq}/InsertAdminVipCard',qs.stringify(params));
   },
 
-//获取排片列表
-  GetScheduleList(params) {
-    return axios.get('/GetAdminVipCard',params);
-  },
-  InsertSchedule(data,success) {
-    request({
-      url:'/AdminMovieSchedule',
-      method:'post',
-      data: data
-    }.then(success))
-  },
-  UpdateSchedule(data,success) {
-    request({
-      url:'/AdminMovieSchedule',
-      method:'post',
-      data: data
-    }.then(success))
-  },
-  DeleteSchedule(data,success) {
-    request({
-      url:'/DeleteMovie',
-      method:'post',
-      data: data
-    }.then(success))
-  },
 
   //更新退票策略
   UpdateRefund(){
@@ -100,12 +63,9 @@ const admin = {
   InsertCoupon(params){
     return axios.post('${base.sq}/InsertCoupon',qs.stringify(params));
   },
-  InsetHall(data,success) {
-    request({
-      url:'/AdminHallAdd',
-      method:'post',
-      data: data
-    }.then(success))
+  //新增影厅tested
+  InsertHall(params) {
+    return axios.post("/InsertHall",params)
   },
   UpdateHall(data,success) {
     request({
@@ -149,12 +109,8 @@ const admin = {
       data: data
     }.then(success))
   },
-  InsertMovie(data,success) {
-    request({
-      url:'/AdminMovieManage',
-      method:'post',
-      data: data
-    }.then(success))
+  InsertMovie(params) {
+   return axios.post("/InsertMovie",params);
   },
   UpdateMovie(data,success) {
     request({
@@ -171,13 +127,37 @@ const admin = {
     }.then(success))
   },
 
-  GetMovieList() {
-    return request({
-      url: '/AdminMovieList',
-      method: 'Get',
-    })
+  GetMovieList(params) {
+    return axios.post("/GetMovieList",params)
   },
 
+  GetScheduleList(success) {
+    request({
+      url:'/AdminMovieList',
+      method:'get',
+    }.then(success))
+  },
+  InsertSchedule(data,success) {
+    request({
+      url:'/AdminMovieSchedule',
+      method:'post',
+      data: data
+    }.then(success))
+  },
+  UpdateSchedule(data,success) {
+    request({
+      url:'/AdminMovieSchedule',
+      method:'post',
+      data: data
+    }.then(success))
+  },
+  DeleteSchedule(data,success) {
+    request({
+      url:'/DeleteMovie',
+      method:'post',
+      data: data
+    }.then(success))
+  },
   //所有电影
   GetLikeMarkList(params) {
     return request({
