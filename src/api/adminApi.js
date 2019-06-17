@@ -2,7 +2,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 axios.defaults.baseURL = "http://localhost:8080";
-axios.defaults.baseURL = "http://172.20.10.2:8080";
+// axios.defaults.baseURL = "http://172.20.10.2:8080";
 
 const admin = {
 
@@ -128,7 +128,7 @@ const admin = {
   },
 
   GetMovieList(params) {
-    return axios.post("/GetMovieList",params)
+    return axios.get("/GetMovieList",params)
   },
 
   GetScheduleList(success) {
