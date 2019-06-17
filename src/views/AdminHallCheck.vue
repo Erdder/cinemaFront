@@ -28,17 +28,27 @@
           </Col>
           <Col span="12">
             <Card style="width:328px;height:280px; margin:30px 50px" dis-hover>
-              <p slot="title" style="text-align: left; ">
-                特点介绍
-              </p>
+              <p slot="title" style="text-align: left; ">特点介绍</p>
               <Form style="text-align: left">
                 <FormItem id="HallFeature">
-                  <p><strong>VIP厅:</strong>人少、安静</p>
-                  <p><strong>3D厅:</strong>需自带3D眼镜</p>
-                  <p><strong>IMAX 3D厅:</strong>提供3D眼镜</p>
-                  <p><strong>情侣厅:</strong>享受二人世界</p>
-                  <p><strong>家庭厅:</strong>珍惜家人相处时光</p>
-                  <p><strong>杜比全景声巨幕厅:</strong>超大屏幕给您身临其境的完美体验</p>
+                  <p>
+                    <strong>VIP厅:</strong>人少、安静
+                  </p>
+                  <p>
+                    <strong>3D厅:</strong>需自带3D眼镜
+                  </p>
+                  <p>
+                    <strong>IMAX 3D厅:</strong>提供3D眼镜
+                  </p>
+                  <p>
+                    <strong>情侣厅:</strong>享受二人世界
+                  </p>
+                  <p>
+                    <strong>家庭厅:</strong>珍惜家人相处时光
+                  </p>
+                  <p>
+                    <strong>杜比全景声巨幕厅:</strong>超大屏幕给您身临其境的完美体验
+                  </p>
                 </FormItem>
               </Form>
             </Card>
@@ -74,187 +84,169 @@
             </Table>
           </Col>
         </Row>
-
       </Content>
     </Layout>
   </div>
 </template>
 
 <script>
-  import adminApi from '../api/adminApi'
+import adminApi from "../api/adminApi";
+import axios from "axios";
 
-  export default {
-    name: "AdminHallCheck",
-    data() {
-      var hallTypes;
-      return {
-        columns: [
-          {
-            title: '影厅类型',
-            slot: 'type',
-            width: 100
-          },
-          {
-            title: '座位数量',
-            slot: 'seat',
-            width: 100
-          },
-          {
-            title: '操作',
-            slot: 'action',
-
-          }
-        ],
-        baseInfo: [
-          {
-            type: '小厅',
-            seat: '5*5'
-          },
-          {
-            type: '普通厅',
-            seat: '9*9'
-          },
-          {
-            type: '大厅',
-            seat: '12*12'
-          },
-          {
-            type: '超大厅',
-            seat: '14*14'
-          },
-        ],
-        editIndex: -1,  //当前聚焦的输入框的行数
-        editType: '',
-        editSeat: '',
-        editName: '',
-        editFeature: '',
-        editInfoType: '',
-        columnInfo: [
-          {
-            title: '影厅名称',
-            slot: 'name',
-          },
-          {
-            title: '影厅类型',
-            slot: 'infoType',
-          },
-          {
-            title: '影厅特色',
-            slot: 'feature',
-          },
-          {
-            title: '操作',
-            slot: 'actionInfo',
-          }],
-        dataInfo: [
-          {
-            name: '金银宝厅',
-            infoType: '小厅',
-            feature: 'VIP厅'
-          },
-          {
-            name: '金铜宝厅',
-            infoType: '小厅',
-            feature: 'VIP厅'
-          },
-        ],
-        editIndexInfo: -1,
-
-        //用来放接口数据的
-        hallList: [{
-          id: '0001',
-          name: '金银财宝厅',
-          seatList: [{
-            row: '12',
-            column: '12',
-          }],
-          feature: 'VIP厅',
-        }, {
-          id: '0001',
-          name: '金银财宝厅',
-          seatList: [{
-            row: '12',
-            column: '12',
-          }],
-          feature: 'VIP厅',
-        }],
-
-      }
-    },
-    methods: {
-      handleEdit(row, index) {
-        this.editType = row.type;
-        this.editSeat = row.seat;
-        this.editIndex = index;
-      },
-      handleSave(index) {
-        this.baseInfo[index].type = this.editType;
-        this.baseInfo[index].seat = this.editSeat;
-        this.editIndex = -1;
-      },
-      remove(index) {
-        console.log(index);
-        this.baseInfo.splice(index, 1);
-        this.editIndex = -1;
-      },
-
-
-      handleEditInfo(rowInfo, indexInfo) {
-        console.log(indexInfo);
-        this.editInfoType = rowInfo.infoType;
-        this.editName = rowInfo.name;
-        this.editFeature = rowInfo.feature;
-        this.editIndexInfo = indexInfo;
-      },
-      handleSaveInfo(index) {
-        this.dataInfo[index].infoType = this.editInfoType;
-        this.dataInfo[index].name = this.editName;
-        this.dataInfo[index].feature = this.editFeature;
-        this.editIndexInfo = -1;
-      },
-      removeInfo(index) {
-        console.log(index);
-        this.dataInfo.splice(index, 1);
-        this.editIndexInfo = -1;
-        console.log(this.dataInfo)
-      },
-      judgeType(row, column) {
-        var retType = '';
-        if (row === 5) {
-          retType = '小厅';
-        } else if (row === 9) {
-          retType = '普通厅';
-        } else if (row === 12) {
-          retType = '大厅';
-        } else {
-          retType = '超大厅';
+export default {
+  name: "AdminHallCheck",
+  data() {
+    var hallTypes;
+    return {
+      columns: [
+        {
+          title: "影厅类型",
+          slot: "type",
+          width: 100
+        },
+        {
+          title: "座位数量",
+          slot: "seat",
+          width: 100
+        },
+        {
+          title: "操作",
+          slot: "action"
         }
-        return retType;
-      },
-      //前端跟后端要的搜索条件
-      askForHallList() {
-        var _this = this;
-        adminApi.GetMovieList()
-          .then(function (response) {
-            _this.hallList = response;
-            for(var i=0;i<_this.hallList.length;i++){
-              _this.dataInfo.push({
-                name: _this.hallList[i].name,
-                infoType: _this.judgeType(_this.hallList[i].seatList[0],_this.hallList[i].seatList[0]),
-                feature: _this.hallList[i].feature,
-              })
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-      },
+      ],
+      baseInfo: [
+        {
+          type: "小厅",
+          seat: "5*5"
+        },
+        {
+          type: "普通厅",
+          seat: "9*9"
+        },
+        {
+          type: "大厅",
+          seat: "12*12"
+        },
+        {
+          type: "超大厅",
+          seat: "14*14"
+        }
+      ],
+      editIndex: -1, //当前聚焦的输入框的行数
+      editType: "",
+      editSeat: "",
+      editName: "",
+      editFeature: "",
+      editInfoType: "",
+      columnInfo: [
+        {
+          title: "影厅名称",
+          slot: "name"
+        },
+        {
+          title: "影厅类型",
+          slot: "infoType"
+        },
+        {
+          title: "影厅特色",
+          slot: "feature"
+        },
+        {
+          title: "操作",
+          slot: "actionInfo"
+        }
+      ],
+      dataInfo: [
+        {
+          name: "金银宝厅",
+          infoType: "小厅",
+          feature: "VIP厅"
+        },
+        {
+          name: "金铜宝厅",
+          infoType: "小厅",
+          feature: "VIP厅"
+        }
+      ],
+      editIndexInfo: -1
+    };
+  },
+  methods: {
+    handleEdit(row, index) {
+      this.editType = row.type;
+      this.editSeat = row.seat;
+      this.editIndex = index;
+    },
+    handleSave(index) {
+      this.baseInfo[index].type = this.editType;
+      this.baseInfo[index].seat = this.editSeat;
+      this.editIndex = -1;
+    },
+    remove(index) {
+      console.log(index);
+      this.baseInfo.splice(index, 1);
+      this.editIndex = -1;
     },
 
-
+    handleEditInfo(rowInfo, indexInfo) {
+      console.log(indexInfo);
+      this.editInfoType = rowInfo.infoType;
+      this.editName = rowInfo.name;
+      this.editFeature = rowInfo.feature;
+      this.editIndexInfo = indexInfo;
+    },
+    handleSaveInfo(index) {
+      this.dataInfo[index].infoType = this.editInfoType;
+      this.dataInfo[index].name = this.editName;
+      this.dataInfo[index].feature = this.editFeature;
+      this.editIndexInfo = -1;
+      // TODO: caq自己写
+    },
+    removeInfo(index) {
+      console.log(index);
+      let id = this.dataInfo[index].id;
+      this.dataInfo.splice(index, 1);
+      this.editIndexInfo = -1;
+      axios
+        .get("DeleteHall?id=" + id)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    judgeType(row, column) {
+      var retType = "";
+      if (row === 5) {
+        retType = "小厅";
+      } else if (row === 9) {
+        retType = "普通厅";
+      } else if (row === 12) {
+        retType = "大厅";
+      } else {
+        retType = "超大厅";
+      }
+      return retType;
     }
+  },
+  created() {
+    var _this = this;
+    axios
+      .get("GetHallList")
+      .then(function(response) {
+        console.log("获取影厅列表", response.data);
+        response.data.forEach(e => {
+          e.infoType = _this.judgeType(e.seatList[0], e.seatList[0]);
+        });
+        _this.dataInfo = response.data;
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+};
 </script>
 
 <style scoped>
-
 </style>
