@@ -8,7 +8,7 @@
           </Select>
         </FormItem>
       </Col>
-      <Col span="6">
+      <Col span="7">
         <FormItem label="选择电影" style="width: 250px">
           <Select v-model="formItem.selectMovie">
             <Option v-for="item in MovieList" :value="item.id" :key="item.id">{{ item.name }}</Option>
@@ -38,6 +38,9 @@
             v-model="formItem.time"
             style="width: 168px"
           ></TimePicker>
+        </Col>
+        <Col span="9">
+          <Button shape="circle" icon="ios-search" @click="searchSchedule">确认搜索</Button>
         </Col>
       </Row>
     </FormItem>
@@ -129,7 +132,7 @@ export default {
   },
 
   methods: {
-    searchSchedul() {
+    searchSchedule() {
       var dataToPost = {
         startDate: this.formItem.date[0],
         endDate: this.formItem.date[1],

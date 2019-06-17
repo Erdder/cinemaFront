@@ -76,19 +76,8 @@
               <span slot="close">未上</span>
             </i-switch>
           </FormItem>
-          <FormItem label="上传海报" prop="posterUrl" style="margin:auto 0 auto 0">
-            <Upload
-              ref ="upload"
-              :format="['jpg','jpeg','png']"
-              :max-size="2048"
-              type="drag"
-              action="https://sm.ms/api/upload"
-              style="display: inline-block;width:200px;">
-              <div style="padding: 20px auto 10px 200px">
-                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff" @change="getImg" ></Icon>
-                <p>点击或拖拽到此处来上传</p>
-              </div>
-            </Upload>
+          <FormItem label="上传海报" prop="posterUrl" style="width:400px" >
+            <Input placeholder="请填入电影海报URL" v-model="formValidate.posterUrl"></Input>
           </FormItem>
           <FormItem label="影片类型" prop="type">
             <CheckboxGroup v-model="formValidate.type">
@@ -371,7 +360,9 @@
           {value: "ZR", label: "扎伊尔"},
           {value: "ZM", label: "赞比亚"}
         ],
-        picInfo: {
+        /*
+        //尝试用图床上传海报
+          picInfo: {
           code:"success",
           msg:"",     //如果成功则为空，失败就有错误信息了
           width: 1157,
@@ -385,6 +376,9 @@
           url: "https://ooo.0o0.ooo/2015/10/19/56249afa4e48b.png",
           delete: "https://sm.ms/api/delete/nLbCw63NheaiJp1"
         }
+
+         */
+
       }
     },
     methods: {
@@ -412,6 +406,8 @@
       handleRemove(index) {
         this.addActors.items[index].status = 0;
       },
+
+      /*
       getImg() {
         /* 需要注意的是在ajax中使用formdata需要配置anync:true,contentType:false,processData:false,
         在axios中不配置也能上传
@@ -420,7 +416,7 @@
         图片是在input的FileList里面，
         这里用的是this.$refs.upload.files[0]，
         这是因为在vue中使用this.$refs.refname来获取dom的真实节点，
-        用jq或者js的获取节点的方法是拿不到的，*/
+        用jq或者js的获取节点的方法是拿不到的，
         var _this = this;
         var formData = new FormData();
         formData.append('file', this.$refs.upload.files[0]);
@@ -436,6 +432,7 @@
           _this.picInfo = res
         })
       },
+  */
 
       //写接口了！
       movieAdd: function () {
@@ -450,7 +447,7 @@
           language: this.language,
           description: this.formValidate.desc,
           duration: this.formValidate.duration,
-          posterUrl: '',
+          posterUrl: this.formValidate.posterUrl,
           director: this.formValidate.nameOfDir,
           starringList: this.starring,
           movieTypeList: [],
