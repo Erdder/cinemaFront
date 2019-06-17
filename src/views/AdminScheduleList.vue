@@ -129,20 +129,18 @@ export default {
   },
 
   methods: {
-    askForSchedule() {
-      var dataToPost = [
-        {
-          startDate: this.formItem.date[0],
-          endDate: this.formItem.date[1],
-          startTime: this.formItem.time[0],
-          endTime: this.formItem.time[1],
-          hallId: this.formItem.selectHall,
-          movieId: this.formItem.selectMovie
-        }
-      ];
-      var _this = this;
+    searchSchedul() {
+      var dataToPost = {
+        startDate: this.formItem.date[0],
+        endDate: this.formItem.date[1],
+        startTime: this.formItem.time[0],
+        endTime: this.formItem.time[1],
+        hallId: this.formItem.selectHall,
+        movieId: this.formItem.selectMovie
+      };
+      console.log("获取排片所需信息", dataToPost);
       axios
-        .post("http://172.28.202.212:8080/GetScheduleList", dataToPost)
+        .get("GetScheduleList", { params: dataToPost })
         .then(function(response) {
           _this.data = response;
         })
@@ -165,7 +163,7 @@ export default {
     axios
       .get("GetMovieList")
       .then(function(response) {
-        console.log (response.data)
+        console.log(response.data);
         _this.MovieList = response.data;
       })
       .catch(function(error) {
