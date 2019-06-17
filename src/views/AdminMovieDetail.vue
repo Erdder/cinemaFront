@@ -16,7 +16,7 @@
     <div style="width: 750px; text-align: justify;margin-top: 5px">
       <p><strong>简介：</strong>{{movieDetail.description}}</p>
       <Button style="margin-top: 40px" type="primary" @click="editMovie">修改</Button>
-      <Button style="margin-top: 40px" type="error" @click="deleteMovie">下架</Button>
+      <Button style="margin-top: 40px" type="error" @click="deleteMovie">删除</Button>
       <p><strong>时长：</strong>{{movieDetail.duration}}</p>
       <p><strong>上映时间：</strong>{{movieDetail.startDate}}</p>
       <p><strong>国家/地区：</strong>{{movieDetail.country}}</p>
@@ -500,9 +500,9 @@
           this.editMovieVisible = true;
         },
         deleteMovie(){
-          axios.get("http://172.28.193.125:8080/DeleteMovie",this.movieDetail.id)
+          axios.get("DeleteMovie",this.movieDetail.id)
             .then(function (response) {
-              this.$Message.info('下架成功');
+              this.$Message.info('删除成功');
             }).catch(function (response) {
               console.error(response)
           })
@@ -514,7 +514,7 @@
             _this.movieDetail.starring.push(actor.valueActor)
           })
           this.movieDetail.status = this.switchStatus===true?1:0;
-          axios.post('http://172.28.193.125:8080/UpdateMovie',this.movieDetail)
+          axios.post('UpdateMovie',this.movieDetail)
             .then(function (response) {
               this.$message.info("修改成功！");
             })

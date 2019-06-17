@@ -2,7 +2,7 @@
   <div class="lay-out">
     <Layout :style="{padding: '0 20px'}">
       <Content :style="{padding: '24px ', minHeight: '280px', background: '#fff'}">
-        <div v-for="movie in movieList" :key="movie">
+        <div v-for="movie in movieList">
           <Card style="height: 220px; margin-bottom: 10px">
             <p slot="title" style="text-align: left; height: 25px">
               <Icon type="ios-film-outline"></Icon>
@@ -88,9 +88,14 @@ export default {
       return des.length > 160 ? des.slice(0, 160) + "......" : des;
     },
     renderMovieDetail: function(movieId) {
+      console.log(movieId);
       localStorage.setItem(
         "movieDetail",
-        JSON.stringify(this.movieList[movieId])
+        JSON.stringify(
+          this.movieList.find(item => {
+            return item.id == movieId;
+          })
+        )
       );
       this.$router.push({ path: "AdminMovieDetail" });
     }
@@ -101,12 +106,17 @@ export default {
     admin
       .GetMovieList()
       .then(res => {
-        that.movieList = res.data
-        console.log(res.data)
+        res.data.forEach(e => {
+          e.type = e.movieTypeList;
+          e.starring = e.starringList;
+        });
+        console.log(res.data);
+
+        that.movieList = res.data;
       })
       .catch(err => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   }
 };
 </script>

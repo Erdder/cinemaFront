@@ -441,7 +441,7 @@
       movieAdd: function () {
         var _this = this;
         for (var i = 0; i < this.addActors.items.length; i++) {
-          this.starring.push({name:this.addActors.items[i].valueActor})
+          this.starring.push(this.addActors.items[i].valueActor)
         }
 
        var movieAddList = {
@@ -458,7 +458,7 @@
           status: this.switchStatus?1:0,
         };
         for(var i=0; i<this.formValidate.type.length;i++){
-          movieAddList.movieTypeList.push({name:this.formValidate.type[i]})
+          movieAddList.movieTypeList.push(this.formValidate.type[i])
         }
         console.log(movieAddList);
         admin.InsertMovie(movieAddList)
