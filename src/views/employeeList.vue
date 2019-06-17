@@ -79,10 +79,27 @@ export default {
       this.employeeList[index].employeeName = this.editName;
       this.employeeList[index].employeeJobNumber = this.editJobNumber;
       this.editIndex = -1;
+      axios
+        .post("InsertEmployee", this.employeeList[index])
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     remove(index) {
+      let temp = this.employeeList[index];
       this.employeeList.splice(index, 1);
       this.editIndex = -1;
+      axios
+        .get("DeleteEmployee?id=" + temp.id)
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   },
   created() {
@@ -91,9 +108,10 @@ export default {
       .get("GetEmployee")
       .then(function(response) {
         response.data.forEach(e => {
-          if (e.employeeLevel == 1) e.employeeType = "售票员"
-          else e.employeeType = "清洁工"
-          e.employeeJobNumber = e.jobNumber
+          e.id = e.employeeId;
+          if (e.employeeLevel == 1) e.employeeType = "售票员";
+          else e.employeeType = "清洁工";
+          e.employeeJobNumber = e.jobNumber;
         });
         that.employeeList = response.data;
         console.log(response);

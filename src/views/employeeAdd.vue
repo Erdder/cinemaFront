@@ -119,7 +119,6 @@ export default {
     addEmployee: function() {
       //前端要给后端的输入
       var addEmployee = {
-        employeeId: 1,
         employeeName: this.formValidate.name,
         employeeLevel: this.judgeSize(this.formValidate.type),
         jobNumber: this.formValidate.number
