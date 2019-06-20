@@ -274,7 +274,6 @@
           {value: "LI", label: "列支敦士登"},
           {value: "LT", label: "立陶宛"},
           {value: "LU", label: "卢森堡"},
-          {value: "MO", label: "澳门"},
           {value: "MG", label: "马达加斯加"},
           {value: "MW", label: "马拉维"},
           {value: "MY", label: "马来西亚"},

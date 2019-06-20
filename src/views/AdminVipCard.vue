@@ -22,7 +22,7 @@
      </template>
      <template slot-scope="{ row, index }" slot="type">
        <Input type="text" v-model="editType" v-if="editIndex === index" />
-       <span v-else>{{ this.judgeType(row.type) }}</span>
+       <span v-else>{{ row.type }}</span>
      </template>
 
      <template slot-scope="{ row, index }" slot="action">
@@ -38,6 +38,7 @@
    </Table>
    </div>
 
+    <Button type="primary" ghost style="margin-right:20px;margin-top: 20px" @click="confirmAdd">确认新增</Button>
     <Button type="primary" ghost style="margin-right:200px;margin-top: 20px" @click="confirmSubmit">确认提交</Button>
 
   </Card>
@@ -46,6 +47,7 @@
 </template>
 
 <script>
+  import axios from "axios";
   import admin from "../api/adminApi";
     export default {
         name: "AdminVipCard",
@@ -114,22 +116,9 @@
 
           }
       },
-      created(){
-        this.askForVipCard();
-      },
 
       methods:{
-        //加载页面时得到已有的数据
-        askForVipCard(){
-          var _this = this;
-          admin.GetAdminVipCard()
-            .then(function (response) {
-              _this.baseInfo = response;
-            })
-            .catch(function (error) {
-              console.log(error);
-            })
-        },
+
         handleEdit (row, index) {
           this.editAmount = row.chargeMoney;
           this.editBonus = row.bonus;
@@ -174,10 +163,24 @@
           return type;
         },
 
+        //TODO:405
+        confirmAdd(){
+          alert("确认增加吗？");
+          axios
+            .post("InsertAdminVipCard",this.baseInfo)
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
+        },
+        //TODO:因为不能新增，所以还没能修改
         confirmSubmit(){
           alert("确认提交修改吗？");
           //前端给后端的提交
-          admin.UpdateAdminVipCard(this.baseInfo)
+          axios
+            .post("UpdateAdminVipCard",this.baseInfo)
             .then(function (response) {
               console.log(response);
             })
@@ -186,6 +189,22 @@
             })
         }
         },
+      created() {
+        var that = this;
+        axios
+          .get("GetAdminVipCard")
+          .then(function(response) {
+            response.data.forEach(e => {
+              e.id = e.adminVipCardId;
+              e.type = this.judgeType(e.level);
+            });
+            that.baseInfo = response.data;
+            console.log(response);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     }
 </script>
 

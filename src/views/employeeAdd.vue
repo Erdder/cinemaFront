@@ -123,14 +123,15 @@ export default {
         employeeLevel: this.judgeSize(this.formValidate.type),
         jobNumber: this.formValidate.number
       };
+      var _this = this;
       console.log(addEmployee);
       axios
         .post("InsertEmployee", addEmployee)
         .then(function(response) {
-          console.log(response);
+          _this.$Message.success("新增员工成功！");
         })
         .catch(function(error) {
-          console.log(error);
+          _this.$Message.error("新增失败，请重试");
         });
     }
   }

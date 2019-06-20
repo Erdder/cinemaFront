@@ -78,20 +78,11 @@
 </template>
 
 <script>
-  import admin from "../api/adminApi";
+import axios from "axios";
 
   export default {
     name: "AdminCoupon",
-    created() {
-      var _this = this;
-     admin.GetCoupon()
-        .then(function (response) {
-          _this.movieOption = response;
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-    },
+
     data() {
       return {
         couponList: [
@@ -176,7 +167,8 @@
     methods: {
       addCoupon() {
         var _this = this;
-        admin.InsertCoupon( this.addCouponForm)
+        axios
+          .post("InsertCoupon",this.addCouponForm)
           .then(function (response) {
             _this.$Message.info(response);
           })
@@ -194,6 +186,19 @@
           joinMovieList: [],
         }
       },
+    },
+    created() {
+      //TODO: 获取电影列表无数据
+      axios
+        .get("GetMovieList")
+        .then(function(response) {
+          console.log(response.data);
+          this.movieOption = response.data;     //movieOp 未定义
+         // console.log(response.joinMovieList);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 </script>
