@@ -21,8 +21,10 @@
        <span v-else>{{ row.discount }}</span>
      </template>
      <template slot-scope="{ row, index }" slot="type">
-       <Input type="text" v-model="editType" v-if="editIndex === index" />
-       <span v-else>{{ row.type }}</span>
+       <Select v-model="editType" v-if="editIndex === index" style="margin-bottom: 140px; margin-top: 5px">
+         <Option v-for="item in cardType" :value="item.value" :key="item.value">{{ item.label }}</Option>
+       </Select>
+       <span v-else>{{ judgeType(row.level) }}</span>
      </template>
 
      <template slot-scope="{ row, index }" slot="action">
@@ -37,10 +39,6 @@
      </template>
    </Table>
    </div>
-
-    <Button type="primary" ghost style="margin-right:20px;margin-top: 20px" @click="confirmAdd">确认新增</Button>
-    <Button type="primary" ghost style="margin-right:200px;margin-top: 20px" @click="confirmSubmit">确认提交</Button>
-
   </Card>
 
 
@@ -48,7 +46,7 @@
 
 <script>
   import axios from "axios";
-  import admin from "../api/adminApi";
+
     export default {
         name: "AdminVipCard",
       data(){
@@ -79,74 +77,103 @@
               }
             ],
             editIndex: -1,            //当前聚焦的输入框的行数
-            editName: '',
+            editDiscount: '',
             editBonus: '',
-
+            editAmount:'',
+            editType:'',
+            cardType:[
+              {
+              value:1,
+              label:"至尊卡"
+              },
+              {
+                value:2,
+                label:"黄金卡"
+              },
+              {
+                value:3,
+                label:"白银卡"
+              },
+              {
+                value:4,
+                label:"青铜卡"
+              }],
             //这是包含id的所有信息（前后端接口数据
             baseInfo:[
-          {
-            id: 1,
-            level:1,
-            chargeMoney: 60,
-            bonus: 5,
-            discount: 0.95
-          },
-          {
-            id: 1,
-            level:1,
-            chargeMoney: 300,
-            bonus: 30,
-            discount: 0.9
-          },
-          {
-            id: 1,
-            level:1,
-            chargeMoney: 500,
-            bonus: 100,
-            discount: 0.88
-          },
-          {
-            id: 1,
-            level:1,
-            chargeMoney: 1000,
-            bonus: 200,
-            discount: 0.8
-          },
             ],
 
           }
       },
 
       methods:{
-
+        searchVipCard(){
+          var that = this;
+          axios.get("GetAdminVipCard")
+            .then(function(response) {
+              console.log(response)
+              that.baseInfo = response.data;
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        },
         handleEdit (row, index) {
           this.editAmount = row.chargeMoney;
           this.editBonus = row.bonus;
-          this.editIndex = index;
           this.editDiscount = row.discount;
+          this.editType = row.level
+          this.editIndex = index;
         },
         handleSave (index) {
+          var _this = this;
           this.baseInfo[index].chargeMoney = this.editAmount;
           this.baseInfo[index].bonus = this.editBonus;
           this.baseInfo[index].discount = this.editDiscount;
+          this.baseInfo[index].level = this.editType;
           this.editIndex = -1;
+          for(var i=0;i<this.cardType.length;i++){
+            if(this.baseInfo[index].level === this.cardType[i].value){
+              this.baseInfo[index].levelDetails = this.cardType[i].label
+            }
+          }
+          axios.post("UpdateAdminVipCard",this.baseInfo[index])
+            .then(function (response) {
+              _this.$Message.success("编辑成功！")
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
         },
         remove (index) {
+          var _this = this;
+          axios.get("DeleteAdminVipCard?&id="+this.baseInfo[index].adminVipCardId)
+            .then(function (response) {
+              _this.$Message.success("删除成功！")
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
           this.baseInfo.splice(index,1);
           this.editIndex = -1;
-          admin.DeleteAdminVipCard(this.baseInfo[index].id);        //调用删除接口
   },
         handleAdd(){
+          var _this = this;
           this.baseInfo.push({
             chargeMoney:0,
             bonus:0,
             discount:0,
-            type:"青铜卡",
+            level:1,
+            levelDetails:'至尊卡'
           });
-          /*
-          var simpleData:{};
-          admin.InsertAdminVipCard(this.baseInfo[index].);        //调用新增接口
-          */
+          var ptr = this.baseInfo.length-1
+          axios.post("InsertAdminVipCard",this.baseInfo[ptr])
+            .then(function (response) {
+              _this.$Message.success("新增成功！")
+              _this.searchVipCard()
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
         },
 
         judgeType(level){
@@ -157,53 +184,14 @@
             type = "黄金卡"
           }else if( level === 3){
             type = "白银卡"
-          }else if( level === 4){
+          }else if(level === 4){
             type = "青铜卡"
           }
           return type;
         },
-
-        //TODO:405
-        confirmAdd(){
-          alert("确认增加吗？");
-          axios
-            .post("InsertAdminVipCard",this.baseInfo)
-            .then(function (response) {
-              console.log(response);
-            })
-            .catch(function (error) {
-              console.log(error);
-            })
-        },
-        //TODO:因为不能新增，所以还没能修改
-        confirmSubmit(){
-          alert("确认提交修改吗？");
-          //前端给后端的提交
-          axios
-            .post("UpdateAdminVipCard",this.baseInfo)
-            .then(function (response) {
-              console.log(response);
-            })
-            .catch(function (error) {
-              console.log(error);
-            })
-        }
         },
       created() {
-        var that = this;
-        axios
-          .get("GetAdminVipCard")
-          .then(function(response) {
-            response.data.forEach(e => {
-              e.id = e.adminVipCardId;
-              e.type = this.judgeType(e.level);
-            });
-            that.baseInfo = response.data;
-            console.log(response);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+       this.searchVipCard();
       }
     }
 </script>

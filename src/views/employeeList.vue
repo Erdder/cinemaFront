@@ -79,8 +79,13 @@ export default {
       this.employeeList[index].employeeName = this.editName;
       this.employeeList[index].employeeJobNumber = this.editJobNumber;
       this.editIndex = -1;
-      axios
-        .post("InsertEmployee", this.employeeList[index])
+      var employee = {
+        employeeName:this.employeeList[index].employeeName,
+        jobNumber:this.employeeList[index].employeeJobNumber,
+        employeeLevel:this.employeeList[index].employeeType === '清洁工' ? 0 : 1,
+        employeeId:this.employeeList[index].employeeId
+      }
+      axios.post("UpdateEmployee", employee)
         .then(function(response) {
           console.log(response);
         })

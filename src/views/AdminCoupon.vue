@@ -14,7 +14,7 @@
             {{coupon.activityName}}
           </p>
           <div id="couponBox">
-            <h3>{{coupon.couponName}}</h3>
+            <h3>电影补贴</h3>
             <h4>{{'满'+coupon.moneyMustHave+'减'+coupon.moneyGet}}</h4>
           </div>
           <div style="width: 750px; text-align: justify">
@@ -22,7 +22,7 @@
             <p><strong>起止日期：</strong>{{coupon.startDate+' 至 '+coupon.endDate}}</p>
             <p><strong>参与电影：</strong></p>
             <div v-for="movie in coupon.joinMovieList" :key="movie" style="float: left">
-              <Tag color="cyan">{{movie.name}}</Tag>
+              <Tag color="cyan">{{movieIdToName(movie.movieId)}}</Tag>
             </div>
           </div>
         </Card>
@@ -39,12 +39,6 @@
             </FormItem>
             <FormItem label="活动描述">
               <Input v-model="addCouponForm.activityDescription" placeholder="请输入活动描述"></Input>
-            </FormItem>
-            <FormItem label="优惠券名称" required>
-              <Input v-model="addCouponForm.couponName" placeholder="请输入活动名称"></Input>
-            </FormItem>
-            <FormItem label="优惠券描述">
-              <Input v-model="addCouponForm.couponDescription" placeholder="请输入活动描述"></Input>
             </FormItem>
             <FormItem label="开始日期" required="">
               <DatePicker v-model="addCouponForm.startDate" type="date" placement="bottom-end" placeholder="选择开始日期"
@@ -167,10 +161,9 @@ import axios from "axios";
     methods: {
       addCoupon() {
         var _this = this;
-        axios
-          .post("InsertCoupon",this.addCouponForm)
+        axios.post("InsertCoupon",this.addCouponForm)
           .then(function (response) {
-            _this.$Message.info(response);
+            _this.$Message.info("发布活动成功！");
           })
       },
       cancelAddCoupon() {
@@ -186,15 +179,34 @@ import axios from "axios";
           joinMovieList: [],
         }
       },
+      movieIdToName(id) {
+        var name = '';
+        for(var i=0;i<this.movieOption.length;i++){
+          console.log(this.movieOption[i].id, id)
+          if(this.movieOption[i].id == id){
+            name = this.movieOption[i].name;
+          }
+        }
+        return name;
+      }
     },
     created() {
-      //TODO: 获取电影列表无数据
-      axios
-        .get("GetMovieList")
+      var _this = this;
+      axios.get("GetCoupon")
         .then(function(response) {
-          console.log(response.data);
-          this.movieOption = response.data;     //movieOp 未定义
-         // console.log(response.joinMovieList);
+          _this.couponList = response.data
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      axios.get("GetMovieList")
+        .then(function(response) {
+          response.data.forEach(movie =>{
+            _this.movieOption.push({
+              id:movie.id,
+              name:movie.name
+            })
+          })
         })
         .catch(function(error) {
           console.log(error);

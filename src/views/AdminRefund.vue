@@ -9,9 +9,9 @@
 
   <div style="margin-top: 50px">
   <Table :columns="columnInfo" :data="exampleList" style="width: 900px;margin-top: 10px">
-    <template slot-scope="{ row, index }" slot="timeLeft">
+    <template slot-scope="{ row, index }" slot="quitTime">
       <Input type="text" v-model="editTime" v-if="editIndex === index"/>
-      <span v-else>{{ row.timeLeft }}</span>
+      <span v-else>{{ row.quitTime }}</span>
     </template>
     <template slot-scope="{ row, index }" slot="discount">
       <Input type="text" v-model="editDiscount" v-if="editIndex === index"/>
@@ -29,13 +29,11 @@
     </template>
   </Table>
 </div>
-
-  <Button type="primary" ghost style="margin-right:100px;margin-top: 20px" @click="confirmSubmit">确认提交</Button>
 </Card>
 </template>
 
 <script>
-  import admin from "../api/adminApi";
+  import axios from "axios";
   export default {
     name: "AdminRefund",
     data() {
@@ -43,7 +41,7 @@
         columnInfo: [
           {
             title: '距电影开场时间',
-            slot: 'timeLeft',
+            slot: 'quitTime',
           },
           {
             title: '票价折扣',
@@ -55,27 +53,27 @@
           }],
         exampleList: [
           {
-            timeLeft: 30,
+            quitTime: 30,
             discount: 0,
           },
           {
-            timeLeft: 60,
+            quitTime: 60,
             discount: 0.5,
           },
           {
-            timeLeft: 90,
+            quitTime: 90,
             discount: 0.8,
           },
           {
-            timeLeft: 120,
+            quitTime: 120,
             discount: 0.89,
           },
           {
-            timeLeft: 150,
+            quitTime: 150,
             discount: 0.92,
           },
           {
-            timeLeft: 250,
+            quitTime: 250,
             discount: 0.95,
           },
         ],
@@ -91,41 +89,61 @@
       askForRefund(){
         //获取已有列表
         var _this = this;
-        admin.GetRefund()
+        axios.get("GetTicketStrategyList")
           .then(function (response) {
-            _this.exampleList = response;
+            _this.exampleList = response.data
           })
           .catch(function (error) {
             console.log(error);
           })
       },
+      handleAdd(){
+        var _this = this;
+        this.exampleList.push({
+          quitTime:0,
+          discount:0,
+        });
+        var ptr = this.exampleList.length-1;
+        axios.post("InsertTicketStrategy",this.exampleList[ptr])
+          .then(function (response) {
+            _this.$Message.success("新增成功！")
+            _this.askForRefund();
+          })
+          .catch(function (error) {
+            _this.$Message.error('新增失败，请重试！');
+          })
+      },
       handleEdit(row, index) {
-        this.editTime = row.timeLeft;
+        this.editTime = row.quitTime;
         this.editDiscount = row.discount;
         this.editIndex = index;
       },
       handleSave(index) {
-        this.exampleList[index].timeLeft = this.timeLeft;
-        this.exampleList[index].discount = this.discount;
+        var _this = this;
+        this.exampleList[index].quitTime = this.editTime;
+        this.exampleList[index].discount = this.editDiscount;
         this.editIndex = -1;
-      },
-      remove(index) {
-        this.exampleList.splice(index, 1);
-        this.editIndex = -1;
-        admin.DeleteAdminVipCard(this.exampleList[index].id);        //调用删除接口
-      },
-
-      confirmSubmit() {
-        alert("确认提交修改吗？");
-        //前端给后端的提交
-        admin.UpdateRefund(this.exampleList)
+        console.log(this.exampleList[index]);
+        axios.post("UpdateTicketStrategy",this.exampleList[index])
           .then(function (response) {
-            console.log(response);
+            _this.$Message.success("编辑成功！")
           })
           .catch(function (error) {
-            console.log(error);
+            _this.Message.error('编辑失败，请重试！')
           })
-      }
+      },
+      remove(index) {
+        var _this = this;
+        axios.get("DeleteTicketStrategy?&id="+this.exampleList[index].id)       //todo：这里的id是后端命名的还是前端的
+          .then(function (response) {
+            _this.$Message.success("删除成功！")
+          })
+          .catch(function (error) {
+           _this.$Message.error('编辑失败，请重试！');
+          });
+        this.exampleList.splice(index, 1);
+        this.editIndex = -1;
+      },
     }
   }
 </script>

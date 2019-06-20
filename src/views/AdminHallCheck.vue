@@ -181,6 +181,7 @@
         this.baseInfo[index].type = this.editType;
         this.baseInfo[index].seat = this.editSeat;
         this.editIndex = -1;
+
       },
       remove(index) {
         console.log(index);
@@ -200,8 +201,7 @@
         this.dataInfo[index].name = this.editName;
         this.dataInfo[index].feature = this.editFeature;
         this.editIndexInfo = -1;
-        axios
-          .post("UpdateHall", this.dataInfo)
+        axios.post("UpdateHall", this.dataInfo[index])
           .then(function (response) {
             console.log("更新影厅列表", response.data);
           })
@@ -215,8 +215,7 @@
         let id = this.dataInfo[index].id;
         this.dataInfo.splice(index, 1);
         this.editIndexInfo = -1;
-        axios
-          .get("DeleteHall?id=" + id)
+        axios.get("DeleteHall?id=" + id)
           .then(res => {
             console.log(res);
           })

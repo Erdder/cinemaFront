@@ -1,29 +1,36 @@
 <template>
   <Card style="width:1000px;padding-left: 80px">
-    <Form inline style="padding-left: 20px">
+    <Form inline style="padding-left: 20px;">
+      <Row>
+        <Col span="8">
       <FormItem label="选择电影" style="width:200px;margin-right: 150px;text-align: left">
         <Select v-model="movieModel">
           <Option v-for="item in movieList" :value="item.id" :key="item.id">{{ item.name }}</Option>
         </Select>
       </FormItem>
+      </Col>
+      <Col span="8">
       <FormItem label="选择日期" style="width:200px;margin-right: 150px">
-        <Row>
-          <Col span="20">
             <DatePicker
               type="daterange"
               :options="options2"
+              v-model="dateValue"
               placement="bottom-end"
               placeholder="请选择日期"
               style="width: 200px"
             ></DatePicker>
-          </Col>
-        </Row>
       </FormItem>
+      </Col>
+      <Col span="8">
       <FormItem label="选择影厅" style="width:200px;margin-right: 150px;text-align: left">
         <Select v-model="hallModel">
           <Option v-for="item in hallList" :value="item.id" :key="item.id">{{ item.name }}</Option>
         </Select>
       </FormItem>
+      </Col>
+      </Row>
+      <Row>
+        <Col span="8">
       <FormItem label="场次票价" style="width:200px;margin-right: 150px">
         <Input
           v-model="ticketValue"
@@ -33,20 +40,14 @@
           type="number"
         />
       </FormItem>
-      <FormItem label="电影时间" style="width:400px;margin-right: 300px;text-align: left">
-        <el-time-picker
-          is-range
-          arrow-control
-          size="small"
-          default-value
-          v-model="timeValue"
-          range-separator="-"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-          placeholder="选择时间范围"
-        ></el-time-picker>
+        </Col>
+        <Col span="8">
+      <FormItem label="电影时间" style="width:200px;margin-right: 150px;text-align: left">
+        <TimePicker v-model="timeValue" type="timerange" placement="bottom-end" placeholder="选择时间" style="width: 168px"></TimePicker>
       </FormItem>
-      <Form>
+        </Col>
+      </Row>
+      <Form style="text-align: center">
         <FormItem>
           <Button type="primary" @click="addSchedule" style="margin-right: 50px">确认</Button>
           <Button @click="handleReset('formValidate')" style="margin-right: 180px">重置</Button>
@@ -108,27 +109,31 @@ export default {
         ]
       },
       ticketValue: "",
-      timeValue: ""
+      timeValue: [],
+      dateValue:[]
     };
   },
   methods: {
     addSchedule: function() {
+      var _this = this;
       //前端给后端的输入
       var addScheduleList = {
         hallId: this.hallModel,
         movieId: this.movieModel,
-        startTime: this.timeValue[0],
-        endTime: this.timeValue[1],
-        price: this.ticketValue
+        startTime: new Date().format("yyyy-MM-dd")+'T'+this.timeValue[0]+'.0000',
+        endTime: new Date().format("yyyy-MM-dd")+'T'+this.timeValue[1]+'.0000',
+        price: this.ticketValue,
+        startOnSaleDate:this.dateValue[0].format("yyyy-MM-dd"),
+        endOnSaleDate:this.dateValue[1].format("yyyy-MM-dd"),
       };
       console.log(addScheduleList);
       axios
         .post("InsertSchedule", addScheduleList)
         .then(function(response) {
-          console.log(response);
+          _this.$Message.success("新增排片成功！");
         })
         .catch(function(error) {
-          console.log(error);
+          _this.$Message.error("新增失败，请重试！");
         });
     }
   },
@@ -152,6 +157,24 @@ export default {
       .catch(function(error) {
         console.log(error);
       });
+    Date.prototype.format = function(fmt)
+    {
+      var o = {
+        "M+" : this.getMonth()+1,                 //月份
+        "d+" : this.getDate(),                    //日
+        "h+" : this.getHours(),                   //小时
+        "m+" : this.getMinutes(),                 //分
+        "s+" : this.getSeconds(),                 //秒
+        "q+" : Math.floor((this.getMonth()+3)/3), //季度
+        "S"  : this.getMilliseconds()             //毫秒
+      };
+      if(/(y+)/.test(fmt))
+        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+      for(var k in o)
+        if(new RegExp("("+ k +")").test(fmt))
+          fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+      return fmt;
+    }
   }
 };
 </script>
